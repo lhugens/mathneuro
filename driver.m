@@ -2,7 +2,7 @@ clear all, close all, clc;
 
 % exercise to run
 % note: treat S2 of exercise 6 as exercise 7
-VIEW_EXERCISE = 7;
+VIEW_EXERCISE = 6;
 
 %================================================================
 if (VIEW_EXERCISE == 2)
@@ -22,12 +22,14 @@ if (VIEW_EXERCISE == 4)
     vplot = figure();
     subplot(2, 1, 1);
     plot(Vs, ms); 
+    yline(0.9, 'r');
     xlabel('V'); ylabel('m'); grid on;
     disp(sprintf('V value for which m = 0.9: %.6e', fsolve(@(V) m(V) - 0.9, -20)));
     
     % h(C) plot
     subplot(2, 1, 2);
     plot(Cs, hs); 
+    yline(0.1, 'r');
     xlabel('C'); ylabel('h'); grid on;
     disp(sprintf('C value for which h = 0.1: %.6e', fsolve(@(C) h(C) - 0.1, 0.001)));
 
@@ -42,9 +44,6 @@ if (VIEW_EXERCISE == 5)
 end
 %================================================================
 if (VIEW_EXERCISE == 6)
-end
-%================================================================
-if (VIEW_EXERCISE == 7)
 
     % first, let's find the rest state for 
     % the case I_app = 0:
@@ -72,8 +71,17 @@ if (VIEW_EXERCISE == 7)
 
     % now, let's switch I_app to I at t = a
 
+    CASE = 3;
+
+    if     CASE == 1
+        I = 4;
+    elseif CASE == 2
+        I = 1;
+    elseif CASE == 3
+        I = 1.2;
+    end
+
     % conditions
-    I = 1.2;
     a = 3000;
     P_max = 0.002;
     I_app = @(t) I * heaviside(t - a);
@@ -81,7 +89,6 @@ if (VIEW_EXERCISE == 7)
     u0(1) = 1.0;
     u0(2) = 1.0;
 
-    %%{
     % time evolution
     ts = [0 10000];
     dudt = @(t, u) model(t, u, I_app, P_max);
@@ -102,42 +109,12 @@ if (VIEW_EXERCISE == 7)
 
     % plot comet
     vplot = figure();
-    plot_nullclines(I, true);
+    plot_nullclines(I, false);
     xlabel('V'); ylabel('C'); grid on; hold on;
-    %xlim([min(Vs) max(Vs)]);
-    %ylim([min(Cs) max(Cs)]);
-    xlim([-100 100]);
-    ylim([-5 5]);
-    comet(Vs, Cs, 0.1);
-    pause
-    %%}
+    xlim([-80 20]);
+    ylim([0 2]);
+    comet(Vs, Cs);
 
-    %{
-    u0(1) = 1.0;
-    u0(2) = 1.0;
-    a = 3000;
-    P_max = 0.002;
-    I_app = @(t) I * heaviside(t - a);
-
-    Itest = linspace(0,100,100);
-    error = zeros(size(length(Itest)));
-    for i = 1:length(Itest)
-        I_app = @(t) Itest(i) * heaviside(t - a);
-        dudt = @(t, u) model(t, u, I_app, P_max);
-        
-        ts = [0 10000];
-        
-        [t, U] = ode45(dudt, ts, u0);
-        
-        error(i) = sum((U(300+2:end,1)-U(300+1:end-1,1)).^2);
-    end
-
-    vplot = figure();
-    plot(Itest, error);
-    xlabel('IApp'); 
-    ylabel('dif sum'); 
-    grid on;
-    %}
 end
 
 %================================================================
@@ -145,13 +122,16 @@ function plot_nullclines(I_app, signs)
     fp_V_dot = fimplicit(@(V,C) V_dot(V,C, I_app), [-100 100 -5 5]);
     fp_V_dot.Color = 'red';
     hold on;
+    fp_V_dot = fimplicit(@(V,C) V_dot(V,C, 0), [-100 100 -5 5]);
+    fp_V_dot.Color = 'black';
+    hold on;
     fp_C_dot = fimplicit(@(V,C) C_dot(V,C), [-100 100 -5 5]);
     fp_C_dot.Color = 'blue';
     if (signs == true)
-        Vs = linspace(-100, 100, 10);
-        Cs = linspace(-5, 5, 10);
-        r_v = 2.5
-        r_c = 0.25
+        Vs = linspace(-100, 100, 20);
+        Cs = linspace(-5, 5, 20);
+        r_v = 2.5;
+        r_c = 0.25;
         for v = Vs
             for c = Cs
                 v_dot = V_dot(v, c, I_app);
@@ -165,8 +145,9 @@ function plot_nullclines(I_app, signs)
                 elseif (v_dot > 0) && (c_dot > 0)
                     theta =    pi/4;
                 end
-                q = quiver(v, c, -r_v * cos(theta), -r_c * sin(theta), 'black', 'LineWidth', 1);
+                q = quiver(v, c, -r_v * cos(theta), -r_c * sin(theta), 'black', 'LineWidth', 0.8);
                 q.ShowArrowHead = 'off';
+                q.Annotation.LegendInformation.IconDisplayStyle = 'off';
                 q.Marker = '.';
             end
         end
