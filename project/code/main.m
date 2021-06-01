@@ -11,7 +11,7 @@ tau_w   = 144;
 a       = 4;
 
 % exercise to run
-VIEW_PART = 2;
+VIEW_PART = 3;
 
 %================================================================
 if (VIEW_PART == 1)
@@ -43,6 +43,36 @@ end
 
 %================================================================
 if (VIEW_PART == 3)
+    Vs  = linspace(-100, -20, 1000);
+    re1 = zeros(length(Vs));
+    re2 = zeros(length(Vs));
+    im1 = zeros(length(Vs));
+    im2 = zeros(length(Vs));
+    a = 1;
+    c = a / tau_w;
+    for i=1:length(Vs)
+        b = (g_L/C) * (1 - exp((Vs(i) - V_T)/delta_T));
+        p = [a b c];
+        r = roots(p);
+        re1(i) = real(r(1));
+        re2(i) = real(r(2));
+        im1(i) = imag(r(1));
+        im2(i) = imag(r(2));
+    end
+    vplot = figure();
+    subplot(2, 2, 1);
+    plot(Vs, re1); 
+    subplot(2, 2, 2);
+    plot(Vs, re2); 
+    subplot(2, 2, 3);
+    plot(Vs, im1); 
+    subplot(2, 2, 4);
+    plot(Vs, im2); 
+
+end
+
+%================================================================
+if (VIEW_PART == 4)
     Vs  = linspace(-100, 0, 1000);
     Vds = V_discr(Vs);
     
@@ -67,3 +97,4 @@ function plot_nullclines(I_app)
     fp_w_dot = fimplicit(@(V,w) w_dot(V, w), [-100 30 -1000 1000]);
     hold on;
 end
+
