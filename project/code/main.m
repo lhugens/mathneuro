@@ -11,7 +11,7 @@ tau_W   = 144;
 a       = 4;
 
 % exercise to run
-VIEW_PART = 1;
+VIEW_PART = 3;
 
 % GENERAL VIEW OF NULLCLINE BEHAVIOUR
 %================================================================
@@ -28,6 +28,33 @@ end
 if (VIEW_PART == 2)
     plot_V_fixed_vs_I()
 end
+
+% PLOT EIGENVALUES OF JACOBIAN
+%================================================================
+if (VIEW_PART == 3)
+    Vs = linspace(-100, 30, 1000);
+    ES = J_eigen(Vs);
+    disp(size(ES));
+    E1 = ES(1);
+    E2 = ES(2);
+    r1 = real(E1);
+    r2 = real(E2);
+    i1 = imag(E1);
+    i2 = imag(E2);
+    disp(length(i2));
+    disp(length(Vs));
+
+    %vplot = figure();
+    %subplot(2, 2, 1);
+    %plot(Vs, r1);
+    %subplot(2, 2, 2);
+    %plot(Vs, r2);
+    %subplot(2, 2, 3);
+    %plot(Vs, i1);
+    %subplot(2, 2, 4);
+    %plot(Vs, i2);
+end
+
 
 %================================================================
 if (VIEW_PART == 10)
