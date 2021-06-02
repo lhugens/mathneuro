@@ -116,14 +116,17 @@ C\dot{V} & =I-g_{\mathrm{L}}\left(V-E_{\mathrm{L}}\right)+g_{\mathrm{L}}\Delta_{
 \end_layout
 
 \begin_layout Standard
-fixed point of the system:
-\end_layout
-
-\begin_layout Standard
+consider the following transformation of coordinates:
 \begin_inset Formula 
 \begin{align*}
-0 & =I-g_{\mathrm{L}}\left(V-E_{\mathrm{L}}\right)+g_{\mathrm{L}}\Delta_{\mathrm{T}}\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}-w\\
-0 & =a\left(V-E_{\mathrm{L}}\right)-w
+\tau_{w}' & =\frac{\tau_{w}}{\tau_{m}}=\frac{g_{L}\tau_{w}}{C}\\
+a' & =\frac{a}{g_{L}}\\
+I' & =\frac{I}{g_{L}\Delta_{T}}+\left(1+\frac{a}{g_{L}}\right)\frac{E_{L}-V_{T}}{\Delta_{T}}\\
+t' & =\frac{t}{\tau_{m}}\\
+b' & =\frac{b}{g_{L}\Delta_{T}}\\
+V'_{r} & =\frac{V_{r}-V_{T}}{\Delta_{T}}\\
+V'(t') & =\frac{V(t)-V_{T}}{\Delta_{T}}\\
+w'(r') & =\frac{w(t)+a\left(E_{L}-V_{T}\right)}{g_{L}\Delta_{T}}
 \end{align*}
 
 \end_inset
@@ -132,93 +135,16 @@ fixed point of the system:
 \end_layout
 
 \begin_layout Standard
-which implies 
-\begin_inset Formula 
-\[
-I-g_{\mathrm{L}}\left(V-E_{\mathrm{L}}\right)+g_{\mathrm{L}}\Delta_{\mathrm{T}}\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}=a\left(V-E_{\mathrm{L}}\right)
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Jacobian
-\end_layout
-
-\begin_layout Standard
+the system becomes:
 \begin_inset Formula 
 \begin{align*}
-\mathbf{J}(v,r) & =\left[\begin{array}{ll}
-\frac{\partial\dot{V}}{\partial V} & \frac{\partial\dot{V}}{\partial w}\\
-\frac{\partial\dot{w}}{\partial V} & \frac{\partial\dot{w}}{\partial w}
-\end{array}\right]\\
- & =\left[\begin{array}{ll}
-\frac{g_{L}}{C}\left(\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}-1\right) & \,\,\,-1\\
-\frac{a}{t_{w}} & \,\,\,-1
-\end{array}\right]
+\dot{V'} & =-V'+e^{V'}-w'+I'\\
+\tau_{w}'\dot{w'} & =a'V'-w'
 \end{align*}
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-eigenvalue calculation
-\begin_inset Formula 
-\[
-\text{det}\left(\mathbf{J}(v,r)-\lambda I\right)=\lambda\left[\frac{g_{L}}{C}\left(1-\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}\right)+\lambda\right]+\frac{a}{t_{w}}
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-eigenvalues are the roots of:
-\begin_inset Formula 
-\[
-\lambda^{2}+\lambda\frac{g_{L}}{C}\left(1-\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}\right)+\frac{a}{t_{w}}=0
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-the discriminant of this equation is:
-\begin_inset Formula 
-\[
-b^{2}-4ac=\left[\frac{g_{L}}{C}\left(1-\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}\right)\right]^{2}-\frac{4a}{t_{w}}
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-it's zeros ar
-\begin_inset Formula 
-\begin{align*}
-\left[\frac{g_{L}}{C}\left(1-\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}\right)\right]^{2} & =\frac{4a}{t_{w}}\\
-\left(1-\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}\right)^{2} & =\frac{4aC^{2}}{t_{w}g_{L}^{2}}\\
-1-\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}} & =\pm\sqrt{\frac{4aC^{2}}{t_{w}g_{L}^{2}}}\\
-\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}} & =1\pm\sqrt{\frac{4aC^{2}}{t_{w}g_{L}^{2}}}\\
-V & =V_{\mathrm{T}}+\Delta_{\mathrm{T}}\log\left(1\pm\sqrt{\frac{4aC^{2}}{t_{w}g_{L}^{2}}}\right)
-\end{align*}
-
-\end_inset
-
-given the constants of the problem, 
-\begin_inset Formula $V^{\text{*}}=V_{\mathrm{T}}+\Delta_{\mathrm{T}}\log\left(1-\sqrt{\frac{4aC^{2}}{t_{w}g_{L}^{2}}}\right)$
-\end_inset
-
- is complex, so we don't care about it.
+f
 \end_layout
 
 \end_body

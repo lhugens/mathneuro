@@ -91,7 +91,7 @@ theorems-chap
 \begin_body
 
 \begin_layout Title
-Title
+Adaptative Exponential Integrate-and-Fire Model
 \end_layout
 
 \begin_layout Author
@@ -100,6 +100,51 @@ Leonardo Hügens
 \end_inset
 
 l.lobatodiasleitehugens@students.uu.nl
+\end_layout
+
+\begin_layout Standard
+system
+\begin_inset Formula 
+\begin{align*}
+C\dot{V} & =I-g_{\mathrm{L}}\left(V-E_{\mathrm{L}}\right)+g_{\mathrm{L}}\Delta_{\mathrm{T}}\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}-w\\
+\tau_{w}\dot{w} & =a\left(V-E_{\mathrm{L}}\right)-w
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+consider the following transformation of coordinates:
+\begin_inset Formula 
+\begin{align*}
+\tau_{w}' & =\frac{\tau_{w}}{\tau_{m}}=\frac{g_{L}\tau_{w}}{C}\\
+a' & =\frac{a}{g_{L}}\\
+I' & =\frac{I}{g_{L}\Delta_{T}}+\left(1+\frac{a}{g_{L}}\right)\frac{E_{L}-V_{T}}{\Delta_{T}}\\
+t' & =\frac{t}{\tau_{m}}\\
+b' & =\frac{b}{g_{L}\Delta_{T}}\\
+V'_{r} & =\frac{V_{r}-V_{T}}{\Delta_{T}}\\
+V'(t') & =\frac{V(t)-V_{T}}{\Delta_{T}}\\
+w'(r') & =\frac{w(t)+a\left(E_{L}-V_{T}\right)}{g_{L}\Delta_{T}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+the system becomes:
+\begin_inset Formula 
+\begin{align*}
+\dot{V'} & =-V'+e^{V'}-w'+I'\\
+\tau_{w}'\dot{w'} & =a'V'-w'
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \end_body

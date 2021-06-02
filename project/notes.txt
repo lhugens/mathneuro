@@ -41,3 +41,9 @@ In particular we ask you to focus on the following points:
 You should submit a report and, optionally, your code in a .zip file. You should also prepare a 10-minute presentation of your report. 
 You don’t need to submit the presentation, which should be ready on the day of your exam, as we shall communicate separately. 
 The deadline for submitting the project is Monday the 7th of June at 12:00 noon. 
+
+Goal for the day
+-----------------
+
+-> Derive analytical expression for the fixed V points
+-> Determine eigenvalues of Jacobian in those fixed points, to determine if they are stable or unstable.
