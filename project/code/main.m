@@ -2,16 +2,24 @@ clear all, close all, clc;
 
 global C g_L E_L V_T delta_T tau_W a;
 
-C       = 281;
 g_L     = 20;
 E_L     = -70.6;
 V_T     = -50.4;
 delta_T = 2;
 tau_W   = 144;
-a       = 4;
+%a       = 0.5;
+%C       = 281;
+
+% type I
+%a = 0.2*g_L;
+%C = 3*tau_W*g_L;
+
+% type II
+a = 3*g_L;
+C = 0.5*tau_W*g_L;
 
 % exercise to run
-VIEW_PART = 3;
+VIEW_PART = 2;
 
 % GENERAL VIEW OF NULLCLINE BEHAVIOUR
 %================================================================
@@ -27,32 +35,34 @@ end
 %================================================================
 if (VIEW_PART == 2)
     plot_V_fixed_vs_I()
+    hold on;
+
+    Vs = linspace(-100, -40, 1000);
+    [r1 r2 i1 i2] = J_eigen(Vs);
+    idx = find(r2>0);
+    V_turn = min(Vs(idx));
+    I_turn = I_fixed(V_turn);
+    scatter(I_turn, V_turn, 'MarkerFaceColor', [.75 0 .75], 'MarkerEdgeColor', [.75 0 .75]); 
 end
 
 % PLOT EIGENVALUES OF JACOBIAN
 %================================================================
 if (VIEW_PART == 3)
-    Vs = linspace(-100, 30, 1000);
-    ES = J_eigen(Vs);
-    disp(size(ES));
-    E1 = ES(1);
-    E2 = ES(2);
-    r1 = real(E1);
-    r2 = real(E2);
-    i1 = imag(E1);
-    i2 = imag(E2);
-    disp(length(i2));
-    disp(length(Vs));
+    Vs = linspace(-100, -40, 1000);
+    [r1 r2 i1 i2] = J_eigen(Vs);
 
-    %vplot = figure();
-    %subplot(2, 2, 1);
-    %plot(Vs, r1);
-    %subplot(2, 2, 2);
-    %plot(Vs, r2);
-    %subplot(2, 2, 3);
-    %plot(Vs, i1);
-    %subplot(2, 2, 4);
-    %plot(Vs, i2);
+    vplot = figure();
+    subplot(2, 2, 1);
+    plot(Vs, r1);
+    subplot(2, 2, 2);
+    plot(Vs, r2);
+    subplot(2, 2, 3);
+    plot(Vs, i1);
+    subplot(2, 2, 4);
+    plot(Vs, i2);
+
+    idx = find(r2>0);
+    V_turn = min(Vs(idx));
 end
 
 
@@ -90,5 +100,16 @@ function plot_V_fixed_vs_I()
     Vs = linspace(-100, 30, 1000);
     Is = I_fixed(Vs);
     plot(Is, Vs);
-    xlim([-1000 500]);
+    hold on;
+
+    Vs1 = linspace(-100, -40, 1000);
+    [r1 r2 i1 i2] = J_eigen(Vs1);
+    idx = find(r2>0);
+    V_turn = min(Vs1(idx));
+    idx = find(Vs < V_turn);
+    V_unstable = Vs(idx);
+    plot(I_fixed(V_unstable), V_unstable);
+
+    xlim([-1000 max(Is)+100]);
 end
+
