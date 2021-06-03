@@ -19,14 +19,16 @@ C       = 281;
 %C = 0.5*tau_W*g_L;
 
 % exercise to run
-VIEW_PART = 2;
+VIEW_PART = 1;
 
 % GENERAL VIEW OF NULLCLINE BEHAVIOUR
 %================================================================
 if (VIEW_PART == 1)
+    I = 2410;
+    a = 100;
     vplot = figure();
     subplot(1, 2, 1);
-    plot_nullclines(0);
+    plot_nullclines(I);
     subplot(1, 2, 2);
     plot_nullclines(500);
 end
@@ -37,12 +39,12 @@ if (VIEW_PART == 2)
     vplot = figure();
     subplot(2, 1, 2);
     a = 100;
-    xlabel('I'); ylabel('V'); grid on;
     plot_bifurcation();
+    xlabel('I'); ylabel('V'); grid on;
     subplot(2, 1, 1);
     a = 4;
-    xlabel('I'); ylabel('V'); grid on;
     plot_bifurcation();
+    xlabel('I'); ylabel('V'); grid on;
 end
 
 % PLOT EIGENVALUES OF JACOBIAN
@@ -68,15 +70,15 @@ end
 
 %================================================================
 if (VIEW_PART == 10)
-    I = 0;
-    a = 3000;
-    I_app = @(t) 0;
+    I = 2410;
+    a = 100;
+    I_app = @(t) I;
 
-    u0(1) = -80.0;
+    u0(1) = -70.0;
     u0(2) = 0.0;
 
     % time evolution
-    ts = [0 10000];
+    ts = [0 1000];
     dudt = @(t, u) model(t, u, I_app);
     [t, U] = ode45(dudt, ts, u0);
     Vs = U(:,1);
@@ -91,6 +93,8 @@ end
 
 %================================================================
 function plot_nullclines(I_app)
+    global a;
+    disp(a);
     fp_V_dot = fimplicit(@(V,W) V_dot(V, W, I_app), [-100 30 -1000 1000]);
     hold on;
     fp_W_dot = fimplicit(@(V,W) W_dot(V, W), [-100 30 -1000 1000]);
@@ -123,4 +127,8 @@ function plot_bifurcation()
     V_turn = min(Vs(idx));
     I_turn = I_fixed(V_turn);
     scatter(I_turn, V_turn, 'MarkerFaceColor', [.75 0 .75], 'MarkerEdgeColor', [.75 0 .75]); 
+    disp('V_turn');
+    disp(V_turn);
+    disp('I_turn');
+    disp(I_turn);
 end
