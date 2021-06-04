@@ -10,3 +10,18 @@ function dudt = model(t, u, I_app, a)
     dudt(1) = (I_app(t) - g_L * (V - E_L) + g_L * delta_T * exp((V - V_T)/delta_T) - W) / C;
     dudt(2) = (a * (V - E_L) - W) / tau_W;
 end
+
+%{
+MatCont Input:
+
+g_L=20
+E_L=-70.6
+V_T=-50.4
+delta_T=2
+tau_W=144
+C=281
+a=100
+V'=(Iapp-g_L*(V-E_L)+g_L*delta_T*exp((V-V_T)/delta_T)-W)/C
+W'=(a*(V-E_L)-W)/tau_W
+%}
+

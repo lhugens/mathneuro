@@ -18,7 +18,7 @@ C       = 281;
 %C = 0.5*tau_W*g_L;
 
 % exercise to run
-VIEW_PART = 4;
+VIEW_PART = 5;
 
 % GENERAL VIEW OF NULLCLINE BEHAVIOUR
 %================================================================
@@ -103,6 +103,42 @@ if (VIEW_PART == 4)
     %plot_nullclines(I, a);
     %xlabel('V'); ylabel('W'); grid on; hold on;
     %comet(Vs, Ws);
+
+    %vplot = figure();
+    %subplot(2, 1, 1);
+    %plot(t, Vs);
+    %subplot(2, 1, 2);
+    %plot(t, I_app(t));
+end
+
+% SHOW COMET DURING BIFURCATION TYPE II - HOPF
+%================================================================
+if (VIEW_PART == 5)
+    a = 100;
+    I = 2000;
+
+    tmax = 1000000;
+    Imin = 2000;
+    Imax = 2600;
+    m = (Imax - Imin)/tmax;
+    b = Imin;
+    I_app = @(t) m*t + b;
+
+    u0(1) = -59.3;
+    u0(2) = 2173.81;
+
+    % time evolution
+    ts = [0 tmax];
+    dudt = @(t, u) model(t, u, I_app, a);
+    [t, U] = ode45(dudt, ts, u0);
+    Vs = U(:,1);
+    Ws = U(:,2); 
+
+    % plot comet
+    vplot = figure();
+    plot_nullclines(I, a);
+    xlabel('V'); ylabel('W'); grid on; hold on;
+    comet(Vs, Ws);
 
     vplot = figure();
     subplot(2, 1, 1);
