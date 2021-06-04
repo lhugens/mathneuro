@@ -1,5 +1,5 @@
-function v_dot = V_dot(V, W, I_app)
-    global C g_L E_L V_T delta_T tau_W a;
+function v_dot = V_dot(V, W, I_app, a)
+    global C g_L E_L V_T delta_T tau_W;
 
     % state variables
     % V = u(1);

@@ -1,5 +1,5 @@
-function W_dot = W_dot(V, W)
-    global E_L tau_W a;
+function W_dot = W_dot(V, W, a)
+    global E_L tau_W;
 
     % state variables
     % V = u(1);

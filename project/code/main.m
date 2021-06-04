@@ -7,7 +7,6 @@ E_L     = -70.6;
 V_T     = -50.4;
 delta_T = 2;
 tau_W   = 144;
-a       = 4;
 C       = 281;
 
 % type I
@@ -19,39 +18,48 @@ C       = 281;
 %C = 0.5*tau_W*g_L;
 
 % exercise to run
-VIEW_PART = 1;
+VIEW_PART = 4;
 
 % GENERAL VIEW OF NULLCLINE BEHAVIOUR
 %================================================================
 if (VIEW_PART == 1)
-    I = 2410;
-    a = 100;
+    a = 4;
+    I = 400;
     vplot = figure();
-    subplot(1, 2, 1);
-    plot_nullclines(I);
-    subplot(1, 2, 2);
-    plot_nullclines(500);
+    plot_nullclines(I, a);
+    xlabel('V'); ylabel('W'); grid on;
+    title(sprintf('a = %d ; I = %d', a, I))
+
+    a = 100;
+    I = 2400;
+    vplot = figure();
+    plot_nullclines(I, a);
+    xlabel('V'); ylabel('W'); grid on;
+    title(sprintf('a = %d ; I = %d', a, I))
+
 end
 
 % PLOT V_FIXED VS I_APP
 %================================================================
 if (VIEW_PART == 2)
-    vplot = figure();
-    subplot(2, 1, 2);
-    a = 100;
-    plot_bifurcation();
-    xlabel('I'); ylabel('V'); grid on;
-    subplot(2, 1, 1);
     a = 4;
-    plot_bifurcation();
+    vplot = figure();
+    I_turn = plot_bifurcation(a);
     xlabel('I'); ylabel('V'); grid on;
+    title(sprintf('a = %d ; I_{rh} = %0.2f', a, I_turn))
+
+    a = 100;
+    vplot = figure();
+    I_turn = plot_bifurcation(a);
+    xlabel('I'); ylabel('V'); grid on;
+    title(sprintf('a = %d ; I_{rh} = %0.2f', a, I_turn))
 end
 
 % PLOT EIGENVALUES OF JACOBIAN
 %================================================================
 if (VIEW_PART == 3)
     Vs = linspace(-100, -40, 1000);
-    [r1 r2 i1 i2] = J_eigen(Vs);
+    [r1 r2 i1 i2] = J_eigen(Vs, 4);
 
     vplot = figure();
     subplot(2, 2, 1);
@@ -67,68 +75,79 @@ if (VIEW_PART == 3)
     V_turn = min(Vs(idx));
 end
 
-
+% SHOW COMET DURING BIFURCATION TYPE I - SADDLE-NODE
 %================================================================
-if (VIEW_PART == 10)
-    I = 2410;
-    a = 100;
-    I_app = @(t) I;
+if (VIEW_PART == 4)
+    a = 4;
+    I = 401;
 
-    u0(1) = -70.0;
-    u0(2) = 0.0;
+    tmax = 100000;
+    Imin = 400;
+    Imax = 500;
+    m = (Imax - Imin)/tmax;
+    b = Imin;
+    I_app = @(t) m*t + b;
+
+    u0(1) = -54.9;
+    u0(2) = 62.7;
 
     % time evolution
-    ts = [0 1000];
-    dudt = @(t, u) model(t, u, I_app);
+    ts = [0 tmax];
+    dudt = @(t, u) model(t, u, I_app, a);
     [t, U] = ode45(dudt, ts, u0);
     Vs = U(:,1);
     Ws = U(:,2); 
 
     % plot comet
+    %vplot = figure();
+    %plot_nullclines(I, a);
+    %xlabel('V'); ylabel('W'); grid on; hold on;
+    %comet(Vs, Ws);
+
     vplot = figure();
-    plot_nullclines(I);
-    xlabel('V'); ylabel('W'); grid on; hold on;
-    comet(Vs, Ws);
+    subplot(2, 1, 1);
+    plot(t, Vs);
+    subplot(2, 1, 2);
+    plot(t, I_app(t));
 end
 
 %================================================================
-function plot_nullclines(I_app)
-    global a;
-    disp(a);
-    fp_V_dot = fimplicit(@(V,W) V_dot(V, W, I_app), [-100 30 -1000 1000]);
+function plot_nullclines(I_app, a)
+    global E_L;
+    Vmin = -100; 
+    Vmax = 30;
+    Wmin = a*(Vmin - E_L);
+    Wmax = a*(Vmax - E_L);
+    fp_V_dot = fimplicit(@(V,W) V_dot(V, W, I_app, a), [Vmin Vmax Wmin Wmax]);
     hold on;
-    fp_W_dot = fimplicit(@(V,W) W_dot(V, W), [-100 30 -1000 1000]);
+    fp_W_dot = fimplicit(@(V,W) W_dot(V, W, a), [Vmin Vmax Wmin Wmax]);
 end
 
-function plot_V_fixed_vs_I()
+function plot_V_fixed_vs_I(a)
     Vs = linspace(-100, 30, 1000);
-    Is = I_fixed(Vs);
+    Is = I_fixed(Vs, a);
     plot(Is, Vs);
     hold on;
 
     Vs1 = linspace(-100, -40, 1000);
-    [r1 r2 i1 i2] = J_eigen(Vs1);
+    [r1 r2 i1 i2] = J_eigen(Vs1, a);
     idx = find(r2>0);
     V_turn = min(Vs1(idx));
     idx = find(Vs < V_turn);
     V_unstable = Vs(idx);
-    plot(I_fixed(V_unstable), V_unstable);
+    plot(I_fixed(V_unstable, a), V_unstable);
 
     xlim([-1000 max(Is)+100]);
 end
 
-function plot_bifurcation()
-    plot_V_fixed_vs_I()
+function I_turn = plot_bifurcation(a)
+    plot_V_fixed_vs_I(a)
     hold on;
 
     Vs = linspace(-100, -40, 1000);
-    [r1 r2 i1 i2] = J_eigen(Vs);
+    [r1 r2 i1 i2] = J_eigen(Vs, a);
     idx = find(r2>0);
     V_turn = min(Vs(idx));
-    I_turn = I_fixed(V_turn);
+    I_turn = I_fixed(V_turn, a);
     scatter(I_turn, V_turn, 'MarkerFaceColor', [.75 0 .75], 'MarkerEdgeColor', [.75 0 .75]); 
-    disp('V_turn');
-    disp(V_turn);
-    disp('I_turn');
-    disp(I_turn);
 end

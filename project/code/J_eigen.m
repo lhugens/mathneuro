@@ -1,5 +1,5 @@
-function [r1 r2 i1 i2] = J_eigen(V)
-    global C g_L E_L V_T delta_T tau_W a;
+function [r1 r2 i1 i2] = J_eigen(V, a)
+    global C g_L E_L V_T delta_T tau_W;
 
     roots1 = zeros(length(V), 1);
     roots2 = zeros(length(V), 1);
