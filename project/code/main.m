@@ -18,7 +18,17 @@ C       = 281;
 %C = 0.5*tau_W*g_L;
 
 % exercise to run
-VIEW_PART = 5;
+VIEW_PART = 3;
+%disp(C/(g_L*tau_W));
+
+a = 100;
+g = 1-C/(g_L*tau_W)+sqrt(4*a*C/(g_L^2*tau_W))
+f = 1-C/(g_L*tau_W)-sqrt(4*a*C/(g_L^2*tau_W))
+
+disp(g);
+if (VIEW_PART == 10)
+    Vs = linspace(-100, -40, 1000);
+end
 
 % GENERAL VIEW OF NULLCLINE BEHAVIOUR
 %================================================================
@@ -55,11 +65,36 @@ if (VIEW_PART == 2)
     title(sprintf('a = %d ; I_{rh} = %0.2f', a, I_turn))
 end
 
-% PLOT EIGENVALUES OF JACOBIAN
+% COMPARE MY METHOD OF FINDING BIFURCATION WITH ANALYTIC RESULT
 %================================================================
 if (VIEW_PART == 3)
+    as = linspace(0, 100, 100);
+    Is = zeros(length(as), 1);
+    Is_new = zeros(length(as), 1);
     Vs = linspace(-100, -40, 1000);
-    [r1 r2 i1 i2] = J_eigen(Vs, 4);
+    for i=1:length(as)
+        [I_turn V_turn] = turn(Vs, as(i));
+        Is(i) = I_turn;
+        Is_new(i) = I_fixed(V_T + delta_T * log(1 - (C/(g_L*tau_W)- 2*sqrt(a*C/(g_L^2*tau_W)))), as(i));
+    end
+    Is_theory = (g_L + as).*(V_T - E_L - delta_T + delta_T .* log(1+C/(g_L*tau_W))) + delta_T .* (as - C/tau_W);
+    vplot = figure();
+    plot(as, Is_theory, '-', 'Markersize', 16);
+    hold on;
+    plot(as, Is, '.');
+    plot(as, Is_new, '.');
+    xlabel('a'); ylabel('I_{rh}'); grid on;
+    title('Critical current vs a');
+    legend('brute-force', 'theoretical', 'attempt');
+end
+
+
+% PLOT EIGENVALUES OF JACOBIAN
+%================================================================
+if (VIEW_PART == 4)
+    a = 4;
+    Vs = linspace(-100, -40, 1000);
+    [r1 r2 i1 i2] = J_eigen(Vs, a);
 
     vplot = figure();
     subplot(2, 2, 1);
@@ -77,7 +112,7 @@ end
 
 % SHOW COMET DURING BIFURCATION TYPE I - SADDLE-NODE
 %================================================================
-if (VIEW_PART == 4)
+if (VIEW_PART == 5)
     a = 4;
     I = 401;
 
@@ -113,7 +148,7 @@ end
 
 % SHOW COMET DURING BIFURCATION TYPE II - HOPF
 %================================================================
-if (VIEW_PART == 5)
+if (VIEW_PART == 6)
     a = 100;
     I = 2000;
 
@@ -166,11 +201,15 @@ function plot_V_fixed_vs_I(a)
     hold on;
 
     Vs1 = linspace(-100, -40, 1000);
-    [r1 r2 i1 i2] = J_eigen(Vs1, a);
-    idx = find(r2>0);
-    V_turn = min(Vs1(idx));
-    idx = find(Vs < V_turn);
-    V_unstable = Vs(idx);
+    %[r1 r2 i1 i2] = J_eigen(Vs1, a);
+    %idx = find(r2>0);
+    %V_turn = min(Vs1(idx));
+    %idx = find(Vs < V_turn);
+    %V_unstable = Vs(idx);
+    %plot(I_fixed(V_unstable, a), V_unstable);
+
+    [I_turn V_turn] = turn(Vs1, a);
+    V_unstable = Vs(find(Vs < V_turn));
     plot(I_fixed(V_unstable, a), V_unstable);
 
     xlim([-1000 max(Is)+100]);
@@ -181,9 +220,10 @@ function I_turn = plot_bifurcation(a)
     hold on;
 
     Vs = linspace(-100, -40, 1000);
-    [r1 r2 i1 i2] = J_eigen(Vs, a);
-    idx = find(r2>0);
-    V_turn = min(Vs(idx));
-    I_turn = I_fixed(V_turn, a);
+    [I_turn V_turn] = turn(Vs, a);
+    %[r1 r2 i1 i2] = J_eigen(Vs, a);
+    %idx = find(r2>0);
+    %V_turn = min(Vs(idx));
+    %I_turn = I_fixed(V_turn, a);
     scatter(I_turn, V_turn, 'MarkerFaceColor', [.75 0 .75], 'MarkerEdgeColor', [.75 0 .75]); 
 end

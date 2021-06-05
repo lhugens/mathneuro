@@ -137,11 +137,391 @@ w'(r') & =\frac{w(t)+a\left(E_{L}-V_{T}\right)}{g_{L}\Delta_{T}}
 \begin_layout Standard
 the system becomes:
 \begin_inset Formula 
-\begin{align*}
+\[
+\left\{ \begin{array}{ll}
 \dot{V'} & =-V'+e^{V'}-w'+I'\\
 \tau_{w}'\dot{w'} & =a'V'-w'
+\end{array}\right.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+fixed points
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & \left\{ \begin{array}{ll}
+0 & =-V'+e^{V'}-w'+I'\\
+0 & =a'V'-w'
+\end{array}\right.\\
+\implies & \left\{ \begin{array}{ll}
+-e^{V'}+\left(a'+1\right)V' & =I'\\
+w' & =a'V'
+\end{array}\right.
 \end{align*}
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Considering the fixed point expression, let's define 
+\begin_inset Formula $F\left(V'\right)=e^{V'}-\left(a'+1\right)V'$
+\end_inset
+
+.
+ Because 
+\begin_inset Formula $F''\left(V'\right)=e^{V'}>0\,\,\forall V'$
+\end_inset
+
+, 
+\begin_inset Formula $F$
+\end_inset
+
+ is convex, which implies it has a minimum at a certain 
+\begin_inset Formula $V'_{\min}$
+\end_inset
+
+.
+ Thus, we can split the existence of solution to the fixed point equation
+ in 3 cases: if 
+\begin_inset Formula $F\left(V'_{\min}\right)>-I'$
+\end_inset
+
+, then there are no 
+\begin_inset Formula $V'$
+\end_inset
+
+ solutions, if 
+\begin_inset Formula $F\left(V'_{\min}\right)=-I'$
+\end_inset
+
+, there is only the solution 
+\begin_inset Formula $V'=V'_{\min}$
+\end_inset
+
+, and if 
+\begin_inset Formula $F\left(V'_{\min}\right)<-I'$
+\end_inset
+
+ there are two solutions, let's call them 
+\begin_inset Formula $V_{+}$
+\end_inset
+
+ and 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+.
+\begin_inset Formula 
+\[
+e^{V'}-\left(a'+1\right)V'=-I'
+\]
+
+\end_inset
+
+To write the first expression in the form 
+\begin_inset Formula $V_{\text{fixed}}\left(I\right)$
+\end_inset
+
+, we can use Lambert's W function.
+ The equation 
+\begin_inset Formula 
+\[
+ye^{y}=x
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+has solutions
+\begin_inset Formula 
+\[
+y=\left\{ \begin{array}{ll}
+W_{0}\left(x\right) & ,\text{if}\,\,x\ge0\\
+W_{0}\left(x\right)\,\,\text{and}\,\,W_{-1}\left(x\right) & ,\text{if}\,\,-\frac{1}{e}\leq x<0
+\end{array}\right.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, we have:
+\begin_inset Formula 
+\begin{align*}
+\left(a'+1\right)V'-I' & =e^{V'}\\
+\left[\left(a'+1\right)V'-I'\right]e^{-V'} & =1\\
+\left[-V'+\frac{I'}{\left(1+a'\right)}\right]e^{-V'}e^{\frac{I}{\left(1+a'\right)}} & =-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\\
+\left[-V'+\frac{I'}{\left(1+a'\right)}\right]e^{\left[-V'+\frac{I'}{\left(1+a'\right)}\right]} & =-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\\
+\implies\left[-V'+\frac{I'}{\left(1+a'\right)}\right] & =W_{i}\left[-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\right]\\
+V^{'} & =-\frac{I'}{\left(1+a'\right)}-W_{i}\left[-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\right]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+coming back to our original coordinates, we have
+\begin_inset Formula 
+\begin{align*}
+V_{+} & =E_{L}+\frac{I}{g_{L}+a}-\Delta_{T}W_{0}\left(-\frac{1}{1+a/g_{L}}e^{\frac{I}{\Delta_{T}\left(g_{L}+a\right)}}+\frac{E_{L}-V_{T}}{\Delta_{T}}\right)\\
+V_{-} & =E_{L}+\frac{I}{g_{L}+a}-\Delta_{T}W_{-1}\left(-\frac{1}{1+a/g_{L}}e^{\frac{I}{\Delta_{T}\left(g_{L}+a\right)}}+\frac{E_{L}-V_{T}}{\Delta_{T}}\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now, let's analyze the stability of the fixed point curves.
+ In the simplified coordinates, the Jacobian matrix of this system is 
+\begin_inset Formula 
+\[
+\mathbf{J}'(V',w')=\left[\begin{array}{ll}
+\frac{\partial\dot{V'}}{\partial V'} & \frac{\partial\dot{V'}}{\partial w'}\\
+\frac{\partial\dot{w'}}{\partial V'} & \frac{\partial\dot{w'}}{\partial w'}
+\end{array}\right]=\left[\begin{array}{ll}
+e^{V'}-1 & \,\,-1\\
+\frac{a'}{\tau'_{w}} & \,\,-\frac{1}{\tau'_{w}}
+\end{array}\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Denoting 
+\begin_inset Formula $\Delta=\text{det}\left(\mathbf{J}'(V',w')\right)$
+\end_inset
+
+, we have:
+\begin_inset Formula 
+\begin{align*}
+\Delta & =-\frac{e^{V'}-1}{\tau'_{w}}+\frac{a'}{\tau'_{w}}\\
+ & =-\frac{e^{V'}}{\tau'_{w}}+\frac{1}{\tau'_{w}}\left(1+a'\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It's derivative being 
+\begin_inset Formula $\frac{d\Delta}{dV'}=-\frac{e^{V'}}{\tau'_{w}}<0\,\,\forall V'$
+\end_inset
+
+, since 
+\begin_inset Formula $\tau'_{w}>0$
+\end_inset
+
+, it's a monotonically decreasing function, and it's zero is 
+\begin_inset Formula $V^{*}=\log\left(1+a'\right)$
+\end_inset
+
+, which also corresponds to 
+\begin_inset Formula $V_{\text{min}}$
+\end_inset
+
+, since 
+\begin_inset Formula $F'\left(V_{\text{\text{min}}}\right)=0\implies V_{\text{min}}=\log\left(1+a'\right)$
+\end_inset
+
+.
+ Thus, in all the fixed points of the 
+\begin_inset Formula $V_{+}$
+\end_inset
+
+ branch the determinant of the Jacobian matrix is negative, which means
+ they are all saddle points, i.e.
+ they are unstable fixed points.
+ For the 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+ branch, the determinant is positive, so to analyze the stability of the
+ fixed points we need to analyze the trace of the Jacobian matrix 
+\begin_inset Formula $\tau=\text{T}\left(\mathbf{J}'(V',w')\right)$
+\end_inset
+
+, which is:
+\begin_inset Formula 
+\[
+\tau=e^{V'}-1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, 
+\begin_inset Formula $\tau\left(V'_{\min}\right)=\left(1+a'\right)-\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)=a'-\frac{1}{\text{\ensuremath{\tau'_{w}}}}$
+\end_inset
+
+, which means that when 
+\begin_inset Formula $a'<\frac{1}{\tau'_{w}}\iff a<\frac{C}{\tau_{w}}$
+\end_inset
+
+ the fixed point at 
+\begin_inset Formula $V_{\min}$
+\end_inset
+
+ is stable, and when 
+\begin_inset Formula $a<\frac{C}{\tau_{w}}$
+\end_inset
+
+ it is stable.
+ 
+\end_layout
+
+\begin_layout Standard
+Analyzing 
+\begin_inset Formula $\tau$
+\end_inset
+
+ at the branch 
+\begin_inset Formula $V'_{-}$
+\end_inset
+
+, we can use the fact that 
+\begin_inset Formula $\tau$
+\end_inset
+
+ is an increasing function of 
+\begin_inset Formula $V'$
+\end_inset
+
+, and 
+\begin_inset Formula $V'_{-}<V'_{\min}<V'_{+}$
+\end_inset
+
+, which implies:
+\begin_inset Formula 
+\[
+\tau\left(V'_{-}\right)\leq\tau\left(V'_{\min}\right)=a'-\frac{1}{\text{\ensuremath{\tau'_{w}}}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, for case I, 
+\begin_inset Formula $a'<\frac{1}{\tau'_{w}}\iff a<\frac{C}{\tau_{w}}$
+\end_inset
+
+, the entire 
+\begin_inset Formula $V'_{-}$
+\end_inset
+
+ branch is stable, which implies that two stable and unstable fixed points
+ 
+\begin_inset Formula $\left(V'_{+}\,\text{and}\,V'_{-}\right)$
+\end_inset
+
+ merge at 
+\begin_inset Formula $V'_{\min}$
+\end_inset
+
+ and disappear, i.e.
+ this is a saddle node bifurcation.
+ The current at which this bifurcation happens is
+\begin_inset Formula 
+\begin{align*}
+I'_{rh}^{I} & =-e^{V'_{\min}}+\left(a'+1\right)V'_{\min}\\
+ & =-\left(1+a'\right)+\left(1+a'\right)\log\left(1+a'\right)\\
+\implies\frac{I_{rh}^{Ĩ}}{g_{L}\Delta_{T}}+\left(1+\frac{a}{g_{L}}\right)\frac{E_{L}-V_{T}}{\Delta_{T}} & =-\left(1+\frac{a}{g_{L}}\right)+\left(1+\frac{a}{g_{L}}\right)\log\left(1+\frac{a}{g_{L}}\right)\\
+I_{\mathrm{th}}^{I} & =\left(g_{L}+a\right)\left[V_{T}-E_{L}-\Delta_{T}+\Delta_{T}\log\left(1+\frac{a}{g_{L}}\right)\right]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For case II, 
+\begin_inset Formula $a'>\frac{1}{\tau'_{w}}$
+\end_inset
+
+, the trace 
+\begin_inset Formula $\tau$
+\end_inset
+
+ may have positive values in the 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+ brach generally, and the solutions to 
+\begin_inset Formula $\tau=0$
+\end_inset
+
+ are:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V'_{rh}=\log\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, because 
+\begin_inset Formula $V'_{rh}<V'_{\min}$
+\end_inset
+
+, the initially stable point in the branch 
+\begin_inset Formula $V'_{-}$
+\end_inset
+
+ becomes unstable before the merging of the two branches, and so it corresponds
+ to an Andronov-Hopf bifurcation.
+ The current at which it happens is 
+\begin_inset Formula 
+\begin{align*}
+I'_{rh}^{II} & =-e^{V'_{rh}}+\left(a'+1\right)V'_{rh}\\
+ & =-\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)+\left(1+a'\right)\log\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)\\
+\frac{I_{rh}^{II}}{g_{L}\Delta_{T}}+\left(1+\frac{a}{g_{L}}\right)\frac{E_{L}-V_{T}}{\Delta_{T}} & =-\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)+\left(1+a'\right)\log\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, there are no real solutions to 
+\begin_inset Formula $\tau=0$
+\end_inset
+
+ if 
+\begin_inset Formula $1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}<0\implies$
 \end_inset
 
 

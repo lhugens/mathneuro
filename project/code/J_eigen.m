@@ -15,6 +15,7 @@ function [r1 r2 i1 i2] = J_eigen(V, a)
         r = roots([1 c_b c_c]);
         roots1(i) = r(1);
         roots2(i) = r(2);
+    end
 
     r1 = real(roots1);
     r2 = real(roots2);
