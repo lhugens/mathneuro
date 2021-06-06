@@ -1,0 +1,708 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{indentfirst}
+\usepackage{mathtools}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-ams
+theorems-chap
+\end_modules
+\maintain_unincluded_children false
+\language british
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize default
+\spacing double
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1cm
+\topmargin 2cm
+\rightmargin 1cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style british
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Adaptative Exponential Integrate-and-Fire Model
+\end_layout
+
+\begin_layout Author
+Leonardo Hügens
+\begin_inset Newline newline
+\end_inset
+
+l.lobatodiasleitehugens@students.uu.nl
+\end_layout
+
+\begin_layout Standard
+system
+\begin_inset Formula 
+\begin{align*}
+C\dot{V} & =I-g_{\mathrm{L}}\left(V-E_{\mathrm{L}}\right)+g_{\mathrm{L}}\Delta_{\mathrm{T}}\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}-w\\
+\tau_{w}\dot{w} & =a\left(V-E_{\mathrm{L}}\right)-w
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+consider the following transformation of coordinates:
+\begin_inset Formula 
+\begin{align*}
+\tau_{w}' & =\frac{\tau_{w}}{\tau_{m}}=\frac{g_{L}\tau_{w}}{C}\\
+a' & =\frac{a}{g_{L}}\\
+I' & =\frac{I}{g_{L}\Delta_{T}}+\left(1+\frac{a}{g_{L}}\right)\frac{E_{L}-V_{T}}{\Delta_{T}}\\
+t' & =\frac{t}{\tau_{m}}\\
+b' & =\frac{b}{g_{L}\Delta_{T}}\\
+V'_{r} & =\frac{V_{r}-V_{T}}{\Delta_{T}}\\
+V'(t') & =\frac{V(t)-V_{T}}{\Delta_{T}}\\
+w'(r') & =\frac{w(t)+a\left(E_{L}-V_{T}\right)}{g_{L}\Delta_{T}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+the system becomes:
+\begin_inset Formula 
+\[
+\left\{ \begin{array}{ll}
+\dot{V'} & =-V'+e^{V'}-w'+I'\\
+\tau_{w}'\dot{w'} & =a'V'-w'
+\end{array}\right.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+fixed points
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & \left\{ \begin{array}{ll}
+0 & =-V'+e^{V'}-w'+I'\\
+0 & =a'V'-w'
+\end{array}\right.\\
+\implies & \left\{ \begin{array}{ll}
+-e^{V'}+\left(a'+1\right)V' & =I'\\
+w' & =a'V'
+\end{array}\right.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Considering the fixed point expression, let's define 
+\begin_inset Formula $F\left(V'\right)=e^{V'}-\left(a'+1\right)V'$
+\end_inset
+
+.
+ Because 
+\begin_inset Formula $F''\left(V'\right)=e^{V'}>0\,\,\forall V'$
+\end_inset
+
+, 
+\begin_inset Formula $F$
+\end_inset
+
+ is convex, which implies it has a minimum at a certain 
+\begin_inset Formula $V'_{\min}$
+\end_inset
+
+.
+ Thus, we can split the existence of solution to the fixed point equation
+ in 3 cases: if 
+\begin_inset Formula $F\left(V'_{\min}\right)>-I'$
+\end_inset
+
+, then there are no 
+\begin_inset Formula $V'$
+\end_inset
+
+ solutions, if 
+\begin_inset Formula $F\left(V'_{\min}\right)=-I'$
+\end_inset
+
+, there is only the solution 
+\begin_inset Formula $V'=V'_{\min}$
+\end_inset
+
+, and if 
+\begin_inset Formula $F\left(V'_{\min}\right)<-I'$
+\end_inset
+
+ there are two solutions, let's call them 
+\begin_inset Formula $V_{+}$
+\end_inset
+
+ and 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+.
+\begin_inset Formula 
+\[
+e^{V'}-\left(a'+1\right)V'=-I'
+\]
+
+\end_inset
+
+To write the first expression in the form 
+\begin_inset Formula $V_{\text{fixed}}\left(I\right)$
+\end_inset
+
+, we can use Lambert's W function.
+ The equation 
+\begin_inset Formula 
+\[
+ye^{y}=x
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+has solutions
+\begin_inset Formula 
+\[
+y=\left\{ \begin{array}{ll}
+W_{0}\left(x\right) & ,\text{if}\,\,x\ge0\\
+W_{0}\left(x\right)\,\,\text{and}\,\,W_{-1}\left(x\right) & ,\text{if}\,\,-\frac{1}{e}\leq x<0
+\end{array}\right.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, we have:
+\begin_inset Formula 
+\begin{align*}
+\left(a'+1\right)V'-I' & =e^{V'}\\
+\left[\left(a'+1\right)V'-I'\right]e^{-V'} & =1\\
+\left[-V'+\frac{I'}{\left(1+a'\right)}\right]e^{-V'}e^{\frac{I}{\left(1+a'\right)}} & =-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\\
+\left[-V'+\frac{I'}{\left(1+a'\right)}\right]e^{\left[-V'+\frac{I'}{\left(1+a'\right)}\right]} & =-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\\
+\implies\left[-V'+\frac{I'}{\left(1+a'\right)}\right] & =W_{i}\left[-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\right]\\
+V^{'} & =-\frac{I'}{\left(1+a'\right)}-W_{i}\left[-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\right]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+coming back to our original coordinates, we have
+\begin_inset Formula 
+\begin{align*}
+V_{+} & =E_{L}+\frac{I}{g_{L}+a}-\Delta_{T}W_{0}\left(-\frac{1}{1+a/g_{L}}e^{\frac{I}{\Delta_{T}\left(g_{L}+a\right)}}+\frac{E_{L}-V_{T}}{\Delta_{T}}\right)\\
+V_{-} & =E_{L}+\frac{I}{g_{L}+a}-\Delta_{T}W_{-1}\left(-\frac{1}{1+a/g_{L}}e^{\frac{I}{\Delta_{T}\left(g_{L}+a\right)}}+\frac{E_{L}-V_{T}}{\Delta_{T}}\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now, let's analyze the stability of the fixed point curves.
+ In the simplified coordinates, the Jacobian matrix of this system is 
+\begin_inset Formula 
+\[
+\mathbf{J}'(V',w')=\left[\begin{array}{ll}
+\frac{\partial\dot{V'}}{\partial V'} & \frac{\partial\dot{V'}}{\partial w'}\\
+\frac{\partial\dot{w'}}{\partial V'} & \frac{\partial\dot{w'}}{\partial w'}
+\end{array}\right]=\left[\begin{array}{ll}
+e^{V'}-1 & \,\,-1\\
+\frac{a'}{\tau'_{w}} & \,\,-\frac{1}{\tau'_{w}}
+\end{array}\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Denoting 
+\begin_inset Formula $\Delta=\text{det}\left(\mathbf{J}'(V',w')\right)$
+\end_inset
+
+, we have:
+\begin_inset Formula 
+\begin{align*}
+\Delta & =-\frac{e^{V'}-1}{\tau'_{w}}+\frac{a'}{\tau'_{w}}\\
+ & =-\frac{e^{V'}}{\tau'_{w}}+\frac{1}{\tau'_{w}}\left(1+a'\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It's derivative being 
+\begin_inset Formula $\frac{d\Delta}{dV'}=-\frac{e^{V'}}{\tau'_{w}}<0\,\,\forall V'$
+\end_inset
+
+, since 
+\begin_inset Formula $\tau'_{w}>0$
+\end_inset
+
+, it's a monotonically decreasing function, and it's zero is 
+\begin_inset Formula $V^{*}=\log\left(1+a'\right)$
+\end_inset
+
+, which also corresponds to 
+\begin_inset Formula $V_{\text{min}}$
+\end_inset
+
+, since 
+\begin_inset Formula $F'\left(V_{\text{\text{min}}}\right)=0\implies V_{\text{min}}=\log\left(1+a'\right)$
+\end_inset
+
+.
+ Thus, in all the fixed points of the 
+\begin_inset Formula $V_{+}$
+\end_inset
+
+ branch the determinant of the Jacobian matrix is negative, which means
+ they are all saddle points, i.e.
+ they are unstable fixed points.
+ For the 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+ branch, the determinant is positive, so to analyze the stability of the
+ fixed points we need to analyze the trace of the Jacobian matrix 
+\begin_inset Formula $\tau=\text{T}\left(\mathbf{J}'(V',w')\right)$
+\end_inset
+
+, which is:
+\begin_inset Formula 
+\[
+\tau=e^{V'}-1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, 
+\begin_inset Formula $\tau\left(V'_{\min}\right)=\left(1+a'\right)-\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)=a'-\frac{1}{\text{\ensuremath{\tau'_{w}}}}$
+\end_inset
+
+, which means that when 
+\begin_inset Formula $a'<\frac{1}{\tau'_{w}}\iff a<\frac{C}{\tau_{w}}$
+\end_inset
+
+ the fixed point at 
+\begin_inset Formula $V_{\min}$
+\end_inset
+
+ is stable, and when 
+\begin_inset Formula $a<\frac{C}{\tau_{w}}$
+\end_inset
+
+ it is stable.
+ 
+\end_layout
+
+\begin_layout Standard
+Analyzing 
+\begin_inset Formula $\tau$
+\end_inset
+
+ at the branch 
+\begin_inset Formula $V'_{-}$
+\end_inset
+
+, we can use the fact that 
+\begin_inset Formula $\tau$
+\end_inset
+
+ is an increasing function of 
+\begin_inset Formula $V'$
+\end_inset
+
+, and 
+\begin_inset Formula $V'_{-}<V'_{\min}<V'_{+}$
+\end_inset
+
+, which implies:
+\begin_inset Formula 
+\[
+\tau\left(V'_{-}\right)\leq\tau\left(V'_{\min}\right)=a'-\frac{1}{\text{\ensuremath{\tau'_{w}}}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, for case I, 
+\begin_inset Formula $a'<\frac{1}{\tau'_{w}}\iff a<\frac{C}{\tau_{w}}$
+\end_inset
+
+, the entire 
+\begin_inset Formula $V'_{-}$
+\end_inset
+
+ branch is stable, which implies that two stable and unstable fixed points
+ 
+\begin_inset Formula $\left(V'_{+}\,\text{and}\,V'_{-}\right)$
+\end_inset
+
+ merge at 
+\begin_inset Formula $V'_{\min}$
+\end_inset
+
+ and disappear, i.e.
+ this is a saddle node bifurcation.
+ The current at which this bifurcation happens is
+\begin_inset Formula 
+\begin{align*}
+I'_{rh} & =-e^{V'_{\min}}+\left(a'+1\right)V'_{\min}\\
+ & =-\left(1+a'\right)+\left(1+a'\right)\log\left(1+a'\right)\\
+\implies\frac{I_{rh}^{I}}{g_{L}\Delta_{T}}+\left(1+\frac{a}{g_{L}}\right)\frac{E_{L}-V_{T}}{\Delta_{T}} & =-\left(1+\frac{a}{g_{L}}\right)+\left(1+\frac{a}{g_{L}}\right)\log\left(1+\frac{a}{g_{L}}\right)\\
+I_{\mathrm{th}}^{I} & =\left(g_{L}+a\right)\left[V_{T}-E_{L}-\Delta_{T}+\Delta_{T}\log\left(1+\frac{a}{g_{L}}\right)\right]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For case II, 
+\begin_inset Formula $a'>\frac{1}{\tau'_{w}}$
+\end_inset
+
+, the trace 
+\begin_inset Formula $\tau$
+\end_inset
+
+ may have positive values in the 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+ brach generally, and the solutions to 
+\begin_inset Formula $\tau=0$
+\end_inset
+
+ are:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V'_{rh}=\log\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, because 
+\begin_inset Formula $V'_{rh}<V'_{\min}$
+\end_inset
+
+, the initially stable point in the branch 
+\begin_inset Formula $V'_{-}$
+\end_inset
+
+ becomes unstable before the merging of the two branches, and so it corresponds
+ to an Andronov-Hopf bifurcation.
+ The current at which it happens is 
+\begin_inset Formula 
+\begin{align*}
+I'_{rh} & =-e^{V'_{rh}}+\left(a'+1\right)V'_{rh}\\
+ & =-\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)+\left(1+\frac{a}{g_{L}}\right)\log\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)\\
+\frac{I_{rh}^{II}}{g_{L}\Delta_{T}}+\left(1+\frac{a}{g_{L}}\right)\frac{E_{L}-V_{T}}{\Delta_{T}} & =-\left(1+\frac{C}{g_{L}\tau_{w}}\right)+\left(1+\frac{a}{g_{L}}\right)\log\left(1+\frac{C}{g_{L}\tau_{w}}\right)\\
+I_{\mathrm{rh}}^{II} & =\left(g_{L}+a\right)\left[V_{T}-E_{L}-\Delta_{T}+\Delta_{T}\log\left(1+\frac{\tau_{m}}{\tau_{w}}\right)\right]+\Delta_{T}\left(a-\frac{C}{\tau_{w}}\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Estimation of parameters
+\end_layout
+
+\begin_layout Itemize
+- Systematic procedures to extract parameters from experimental data to
+ fit them to a model are unknown for complicated models that capture behavior
+ of neurons in detail, like the Hodgkin-Huxley model.
+ In this paper they show that all parameters can be systematically extracted
+ using a series of standard simulation paradigms.
+ 
+\end_layout
+
+\begin_layout Itemize
+- In this model they tested the aeif model against artificial data generated
+ by a detailed conductance-based model of a regular spiking neuron.
+ This model is a single-comparment model of a regular spiking pyramidal
+ cell (McCormich 1993) with parameters used in Destexhe 1998.
+ 
+\end_layout
+
+\begin_layout Itemize
+- The values of the constants in the book were extracted from data generated
+ by the detailed model.
+ 
+\end_layout
+
+\begin_layout Itemize
+- How they obtained the parameters for the model: 
+\end_layout
+
+\begin_layout Itemize
+- C, g_L and E_L were obtained from an exponential fit to the response of
+ the detailed model to a current pulse.
+ 
+\end_layout
+
+\begin_layout Itemize
+- "a" was determined as follows: Far away from the threshold, where the
+ exponential term can be neglected, make I increase very slowly, such that
+ V is always basically in the stable node, and thus approximately fixed,
+ which implies that from which a can be easily extracted
+\begin_inset Formula 
+\[
+I=(g_{L}+a)(V-E_{L})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes bld
+\end_inset
+
+b
+\begin_inset Quotes brd
+\end_inset
+
+ was determined as follows: first, depolarize the membrane potential close
+ to the average potential during synaptic stimulation, and then inject short
+ but strong current pulses in order to trigger spikes.
+ Just before the pulse onset, the potential is till far away from the threshold
+ potential, and thus we can neglect the exponential term again, which implies
+ 
+\begin_inset Formula 
+\[
+w=-C\frac{dV}{dt}-g_{\mathrm{L}}\left(V-E_{\mathrm{L}}\right)+I
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The differences from the successive 
+\begin_inset Formula $w$
+\end_inset
+
+'s obtained in this way for each spike, and the contribution from the subthresho
+ld adaptation gives the contribution to spike-triggered adaptation.
+ The fitting of these values to an exponential enables the estimate of 
+\begin_inset Formula $b$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{w}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+'
+\begin_inset Formula $\Delta_{T}$
+\end_inset
+
+ and 
+\begin_inset Formula $V_{T}$
+\end_inset
+
+ were estimated as follows: For each value of 
+\begin_inset Formula $\Delta_{T}$
+\end_inset
+
+, choose 
+\begin_inset Formula $V_{T}$
+\end_inset
+
+ such that our model and the detailed model have the same average firing
+ rate (
+\emph on
+effective threshold
+\emph default
+).
+ Then, they chose the 
+\begin_inset Formula $\Delta_{T}$
+\end_inset
+
+ valued that minimized the variance of 
+\begin_inset Formula $V_{T}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Performance
+\end_layout
+
+\begin_layout Standard
+They used to measures of performance: 
+\begin_inset Formula $M$
+\end_inset
+
+, the percentage of missing spikes (spikes are said to match if they are
+ emitted withing 2 ms of each other), relative to the number of spikes in
+ the detailed model; and 
+\begin_inset Formula $\Gamma$
+\end_inset
+
+, the coincidence factor, which is the number of coincidences minus the
+ number of coincidences by chance relative to the total number of pikes
+ produces by both models, defined by
+\begin_inset Formula 
+\[
+\Gamma=\frac{N_{\text{coinc }}-\left\langle N_{\text{coinc }}\right\rangle }{\frac{1}{2}\left(N_{\mathrm{\text{detailed}}}+N_{\mathrm{\text{aeif}}}\right)}\mathcal{N}^{-1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and 
+\begin_inset Formula $\mathcal{N}$
+\end_inset
+
+ is a normalization factor.
+ (add citation)
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Standard
+To perform these measures between the aEIF model and the detailed model,
+ they first calibrated all the parameter values using several systematic
+ procedures, and then they used the same simulation method for both models.
+\end_layout
+
+\begin_layout Standard
+In a first instance, they tested random conductance injection, for which
+ the voltage behave in almost exactly the same way, and most of the spikes
+ were not missed.
+ Averaged between several different conductances, the aEIF model emitted
+ 3% more spikes and missed 4% of the spikes generated by the detailed model,
+ which gives a coincidence factor of 96%.
+ As far as subthreshold dynamics go, they are indistinguishable between
+ the two models, but when a step current is applied, a shift between the
+ two spike trains appears after the first spike, and it grows with time.
+  
+\end_layout
+
+\end_body
+\end_document

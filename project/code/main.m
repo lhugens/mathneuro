@@ -8,40 +8,25 @@ V_T     = -50.4;
 delta_T = 2;
 tau_W   = 144;
 C       = 281;
-
-% type I
-%a = 0.2*g_L;
-%C = 3*tau_W*g_L;
-
-% type II
-%a = 3*g_L;
-%C = 0.5*tau_W*g_L;
+% this case: tau_m < tau_W;
+disp(C/g_L);
 
 % exercise to run
-VIEW_PART = 3;
-%disp(C/(g_L*tau_W));
-
-a = 100;
-g = 1-C/(g_L*tau_W)+sqrt(4*a*C/(g_L^2*tau_W))
-f = 1-C/(g_L*tau_W)-sqrt(4*a*C/(g_L^2*tau_W))
-
-disp(g);
-if (VIEW_PART == 10)
-    Vs = linspace(-100, -40, 1000);
-end
+VIEW_PART = 1;
 
 % GENERAL VIEW OF NULLCLINE BEHAVIOUR
 %================================================================
 if (VIEW_PART == 1)
     a = 4;
-    I = 400;
+    I = 300;
     vplot = figure();
     plot_nullclines(I, a);
+    legend('V nullcline', 'w nullcline');
     xlabel('V'); ylabel('W'); grid on;
     title(sprintf('a = %d ; I = %d', a, I))
 
-    a = 100;
-    I = 2400;
+    a = 4;
+    I = 450;
     vplot = figure();
     plot_nullclines(I, a);
     xlabel('V'); ylabel('W'); grid on;
@@ -52,7 +37,7 @@ end
 % PLOT V_FIXED VS I_APP
 %================================================================
 if (VIEW_PART == 2)
-    a = 4;
+    a = 1;
     vplot = figure();
     I_turn = plot_bifurcation(a);
     xlabel('I'); ylabel('V'); grid on;
@@ -68,24 +53,21 @@ end
 % COMPARE MY METHOD OF FINDING BIFURCATION WITH ANALYTIC RESULT
 %================================================================
 if (VIEW_PART == 3)
-    as = linspace(0, 100, 100);
+    % type I
+    as = linspace(0, 100, 1000);
     Is = zeros(length(as), 1);
-    Is_new = zeros(length(as), 1);
     Vs = linspace(-100, -40, 1000);
     for i=1:length(as)
-        [I_turn V_turn] = turn(Vs, as(i));
-        Is(i) = I_turn;
-        Is_new(i) = I_fixed(V_T + delta_T * log(1 - (C/(g_L*tau_W)- 2*sqrt(a*C/(g_L^2*tau_W)))), as(i));
+        [Is(i) V_turn] = turn(Vs, as(i));
     end
     Is_theory = (g_L + as).*(V_T - E_L - delta_T + delta_T .* log(1+C/(g_L*tau_W))) + delta_T .* (as - C/tau_W);
     vplot = figure();
     plot(as, Is_theory, '-', 'Markersize', 16);
     hold on;
     plot(as, Is, '.');
-    plot(as, Is_new, '.');
     xlabel('a'); ylabel('I_{rh}'); grid on;
     title('Critical current vs a');
-    legend('brute-force', 'theoretical', 'attempt');
+    legend('brute-force', 'theoretical');
 end
 
 
@@ -221,9 +203,7 @@ function I_turn = plot_bifurcation(a)
 
     Vs = linspace(-100, -40, 1000);
     [I_turn V_turn] = turn(Vs, a);
-    %[r1 r2 i1 i2] = J_eigen(Vs, a);
-    %idx = find(r2>0);
-    %V_turn = min(Vs(idx));
-    %I_turn = I_fixed(V_turn, a);
+
     scatter(I_turn, V_turn, 'MarkerFaceColor', [.75 0 .75], 'MarkerEdgeColor', [.75 0 .75]); 
+    legend('unstable', 'stable', 'Bifurcation point');
 end

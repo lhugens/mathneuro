@@ -91,7 +91,8 @@ theorems-chap
 \begin_body
 
 \begin_layout Title
-Adaptative Exponential Integrate-and-Fire Model
+Adaptive Exponential Integrate-and-Fire Model as an Effective Description
+ of Neuronal Activity
 \end_layout
 
 \begin_layout Author
@@ -102,13 +103,54 @@ Leonardo Hügens
 l.lobatodiasleitehugens@students.uu.nl
 \end_layout
 
+\begin_layout Abstract
+In this project we study the Adaptive Exponential Integrate-and-Fire Model,
+ with a focus in deriving analytical results about its subthreshold dynamics,
+ complementing with some observations about how well this model can be fitted
+ to real neuronal behaviors.
+ We show there is a saddle-node bifurcation and a Andronov-Hopf bifurcation,
+ deriving conditions for which each of them exist.
+ We also argue that this model has enough expressive power to reproduce
+ qualitatively real several types of 
+\emph on
+in vitro
+\emph default
+ neuron behavior.
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
 \begin_layout Standard
-system
+There is a clear interest among neuro-computing community in finding a model
+ of a neuron which is simple enough to be efficiently simulated with computer
+ programs, maybe even capable of providing precise results through analytical
+ procedures, while being able to reproduce empirical observations.
+ What happens in reality is that there is always a trade off between simulation
+ efficiency and ability of the model to be fitted to data.
+ 
+\end_layout
+
+\begin_layout Standard
+In this project, we analyze the Adaptive Exponential Integrate-and-Fire
+ Model, a two dimensional model whose dynamical variables are the membrane
+ potential 
+\begin_inset Formula $V$
+\end_inset
+
+ and an adaptation current 
+\begin_inset Formula $w$
+\end_inset
+
+, which is given by the following system of differential equations:
 \begin_inset Formula 
-\begin{align*}
+\begin{equation}
+\left\{ \begin{array}{ll}
 C\dot{V} & =I-g_{\mathrm{L}}\left(V-E_{\mathrm{L}}\right)+g_{\mathrm{L}}\Delta_{\mathrm{T}}\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}-w\\
 \tau_{w}\dot{w} & =a\left(V-E_{\mathrm{L}}\right)-w
-\end{align*}
+\end{array}\right.\label{eq:model}
+\end{equation}
 
 \end_inset
 
@@ -116,7 +158,328 @@ C\dot{V} & =I-g_{\mathrm{L}}\left(V-E_{\mathrm{L}}\right)+g_{\mathrm{L}}\Delta_{
 \end_layout
 
 \begin_layout Standard
-consider the following transformation of coordinates:
+It is intuitive to see that when the potential 
+\begin_inset Formula $V$
+\end_inset
+
+ gets high enough, the exponential term diverges, making the trajectory
+ diverge, which is the spiking behavior in this model.
+ It turns out to be both convenient from a simulation standpoint and interesting
+ in the results it generates to include a reset procedure: when a spike
+ occurs, the membrane potential 
+\begin_inset Formula $V$
+\end_inset
+
+ is instantaneously reset to some value 
+\begin_inset Formula $V_{r}$
+\end_inset
+
+ and the adaptation current is increased:
+\begin_inset Formula 
+\begin{equation}
+\left\{ \begin{array}{ll}
+V & \rightarrow V_{r}\\
+w & \rightarrow w+b
+\end{array}\right.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We will use analytical procedures to make precise statements about bifurcations
+ in this model, and reflect on the relationship between behaviors generated
+ by this model and real neuronal data.
+ Unless stated otherwise, the constant values we're going to use to generate
+ plots in this project are the one's obtain in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper1"
+literal "false"
+
+\end_inset
+
+ as the best fit, which are:
+\begin_inset Formula 
+\begin{align}
+\begin{array}{ll}
+C & =281\,\text{pF}\\
+g_{L} & =20\,\text{nS}\\
+E_{L} & =-70.6\,\text{mV}\\
+V_{T} & =-50.4\,\text{mV}\\
+\Delta_{T} & =2\,\text{mV}\\
+\tau_{w} & =144\,\text{ms}\\
+a & =4\,\text{nS}\\
+b & =0.0805\,\text{nA}
+\end{array}\label{eq:constants}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Procedures and results in Brette and Gerstner 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper1"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For the analysis of the reproducibility of experimental data with the aEIF
+ model, we will be following the paper 
+\emph on
+Adaptive Exponential Integrate-and-Fire Model as an Effective Description
+ of Neuronal Activity
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper1"
+literal "false"
+
+\end_inset
+
+.
+ In this paper, this reproducibility was not studied against experimental
+ data directly, but rather against another model, which was already shown
+ to reproduce a lot of neuron behaviors well.
+ This reference detailed model was a single-compartment model of a regular
+ spiking pyramidal cell with voltage-dependent currents IM, INa, and IK
+ (McCormick et al.
+ 1993 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper5"
+literal "false"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+A quantitative comparison between the two models (aEIF and the detailed
+ one) was made by using two measures of performance of aEIF.
+ The first was 
+\begin_inset Formula $M$
+\end_inset
+
+, which is the percentage of missing spikes (spikes were said to match if
+ they are emitted withing 2 ms of each other), relative to the number of
+ spikes in the detailed model.
+ The second was 
+\begin_inset Formula $\Gamma$
+\end_inset
+
+, the coincidence factor, as defined in Kistler et al.
+ (1997) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper4"
+literal "false"
+
+\end_inset
+
+, which is 
+\begin_inset Formula 
+\[
+\Gamma=\frac{N_{\text{coinc }}-\left\langle N_{\text{coinc }}\right\rangle }{\frac{1}{2}\left(N_{\mathrm{\text{detailed}}}+N_{\mathrm{\text{aeif}}}\right)}\mathcal{N}^{-1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $N_{\mathrm{\text{detailed}}}\text{\,and\,}N_{\mathrm{\text{aeif}}}$
+\end_inset
+
+are the total number of spikes emitted by either model,
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\begin_inset Formula $N_{\text{coinc }}$
+\end_inset
+
+is the number of spikes emitted by aEIF that happened within 2 ms of spikes
+ emitted by the detailed model, 
+\begin_inset Formula $\left\langle N_{\text{coinc }}\right\rangle $
+\end_inset
+
+ is 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+the number of coincidences by chance relative to the total number of pikes
+ produces by both models, and 
+\begin_inset Formula $\mathcal{N}$
+\end_inset
+
+ is a normalization constant.
+ If we define 
+\begin_inset Formula $E$
+\end_inset
+
+ as the percentage of extra spikes, then for small 
+\begin_inset Formula $E$
+\end_inset
+
+ and 
+\begin_inset Formula $M$
+\end_inset
+
+ this coincidence factor can be written as 
+\begin_inset Formula 
+\[
+\Gamma=1-\frac{E+M}{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To perform these measures between the aEIF model and the detailed model,
+ they first calibrated all the parameter values using several systematic
+ procedures, which we will specify later in this project, and then they
+ used the same simulation method for both models.
+ 
+\end_layout
+
+\begin_layout Standard
+In a first instance, they tested random conductance injection, for which
+ the voltage behave in almost exactly the same way, and most of the spikes
+ were not missed.
+ Averaged between several different conductances, the aEIF model emitted
+ 3% more spikes and missed 4% of the spikes generated by the detailed model,
+ which gives a coincidence factor of 96%.
+ As far as subthreshold dynamics go, they are indistinguishable between
+ the two models, but when a step current is applied, a shift between the
+ two spike trains appears after the first spike, and it grows with time.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/paper_results_1.png
+	lyxscale 10
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+A: Regular spiking behavior of 
+\begin_inset Formula $V$
+\end_inset
+
+ in the two models.
+ B: 
+\begin_inset Formula $M$
+\end_inset
+
+ and 
+\begin_inset Formula $E$
+\end_inset
+
+ values for different conductance levels in regular spiking.
+ C: Step-current induced spike trains in both models.
+ D: 
+\begin_inset Formula $M$
+\end_inset
+
+ and 
+\begin_inset Formula $E$
+\end_inset
+
+ values for different conductance levels in spike trains behavior.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In a first instance, they tested random conductance injection, for which
+ the voltage behave in almost exactly the same way, and most of the spikes
+ were not missed, which we can see in Figure 1A and 1B.
+ Averaged between several different conductances, the aEIF model emitted
+ 3% more spikes and missed 4% of the spikes generated by the detailed model,
+ which gives a coincidence factor of 96%.
+ As far as subthreshold dynamics go, they are indistinguishable between
+ the two models, but when a step current is applied, a shift between the
+ two spike trains appears after the first spike, and it grows with time,
+ which we can see in Figure 1C.
+\end_layout
+
+\begin_layout Section
+Subthreshold dynamics
+\end_layout
+
+\begin_layout Standard
+To study analytically the properties of this model, it is useful to perform
+ a linear coordinate transformation to write the differential equations
+ in a simpler way.
+ We'll use the transformation used in Touboul and Brette (2008)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper2"
+literal "false"
+
+\end_inset
+
+, which is
 \begin_inset Formula 
 \begin{align*}
 \tau_{w}' & =\frac{\tau_{w}}{\tau_{m}}=\frac{g_{L}\tau_{w}}{C}\\
@@ -135,7 +498,7 @@ w'(r') & =\frac{w(t)+a\left(E_{L}-V_{T}\right)}{g_{L}\Delta_{T}}
 \end_layout
 
 \begin_layout Standard
-the system becomes:
+In these new coordinates and constants, the systems becomes:
 \begin_inset Formula 
 \[
 \left\{ \begin{array}{ll}
@@ -149,22 +512,24 @@ the system becomes:
 
 \end_layout
 
-\begin_layout Standard
-fixed points
+\begin_layout Subsection
+Fixed points curve
 \end_layout
 
 \begin_layout Standard
+To obtain curves of fixed points, we must set the derivatives of the system
+ to 0, which entails
 \begin_inset Formula 
-\begin{align*}
+\begin{align}
  & \left\{ \begin{array}{ll}
 0 & =-V'+e^{V'}-w'+I'\\
 0 & =a'V'-w'
-\end{array}\right.\\
+\end{array}\right.\nonumber \\
 \implies & \left\{ \begin{array}{ll}
--e^{V'}+\left(a'+1\right)V' & =I'\\
+e^{V'}-\left(a'+1\right)V' & =-I'\\
 w' & =a'V'
-\end{array}\right.
-\end{align*}
+\end{array}\right.\label{eq:fixed}
+\end{align}
 
 \end_inset
 
@@ -172,6 +537,54 @@ w' & =a'V'
 \end_layout
 
 \begin_layout Standard
+The appearance of the nullclines for the aEIF model is represented in the
+ following figure.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/nullclines.png
+	lyxscale 10
+	width 40text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/nullclines_separated.png
+	lyxscale 10
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $V$
+\end_inset
+
+ and 
+\begin_inset Formula $w$
+\end_inset
+
+ Nullclines.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 Considering the fixed point expression, let's define 
 \begin_inset Formula $F\left(V'\right)=e^{V'}-\left(a'+1\right)V'$
 \end_inset
@@ -187,6 +600,10 @@ Considering the fixed point expression, let's define
 
  is convex, which implies it has a minimum at a certain 
 \begin_inset Formula $V'_{\min}$
+\end_inset
+
+, which in this case is 
+\begin_inset Formula $F'\left(V'_{\text{\text{min}}}\right)=0\implies V'_{\text{min}}=\log\left(1+a'\right)$
 \end_inset
 
 .
@@ -220,23 +637,34 @@ Considering the fixed point expression, let's define
 \end_inset
 
 .
-\begin_inset Formula 
-\[
-e^{V'}-\left(a'+1\right)V'=-I'
-\]
+ 
+\end_layout
+
+\begin_layout Standard
+To write 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:fixed"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
-To write the first expression in the form 
+ in the form 
 \begin_inset Formula $V_{\text{fixed}}\left(I\right)$
 \end_inset
 
-, we can use Lambert's W function.
- The equation 
+, we can use Lambert's 
+\begin_inset Formula $W$
+\end_inset
+
+ function.
+ The equation
 \begin_inset Formula 
-\[
-ye^{y}=x
-\]
+\begin{equation}
+ye^{y}=x\label{eq:W}
+\end{equation}
 
 \end_inset
 
@@ -259,15 +687,33 @@ W_{0}\left(x\right)\,\,\text{and}\,\,W_{-1}\left(x\right) & ,\text{if}\,\,-\frac
 \end_layout
 
 \begin_layout Standard
-Thus, we have:
+We can transform 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:fixed"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ in the form of 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:W"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, by the following procedure:
 \begin_inset Formula 
 \begin{align*}
 \left(a'+1\right)V'-I' & =e^{V'}\\
 \left[\left(a'+1\right)V'-I'\right]e^{-V'} & =1\\
 \left[-V'+\frac{I'}{\left(1+a'\right)}\right]e^{-V'}e^{\frac{I}{\left(1+a'\right)}} & =-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\\
-\left[-V'+\frac{I'}{\left(1+a'\right)}\right]e^{\left[-V'+\frac{I'}{\left(1+a'\right)}\right]} & =-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\\
-\implies\left[-V'+\frac{I'}{\left(1+a'\right)}\right] & =W_{i}\left[-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\right]\\
-V^{'} & =-\frac{I'}{\left(1+a'\right)}-W_{i}\left[-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\right]
+\left[-V'+\frac{I'}{\left(1+a'\right)}\right]e^{\left[-V'+\frac{I'}{\left(1+a'\right)}\right]} & =-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}
 \end{align*}
 
 \end_inset
@@ -276,11 +722,17 @@ V^{'} & =-\frac{I'}{\left(1+a'\right)}-W_{i}\left[-\frac{1}{\left(1+a'\right)}e^
 \end_layout
 
 \begin_layout Standard
-coming back to our original coordinates, we have
+Thus, the solutions are:
 \begin_inset Formula 
 \begin{align*}
+ & \left\{ \begin{array}{ll}
+V'_{+} & =-\frac{I'}{\left(1+a'\right)}-W_{0}\left[-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\right]\\
+V'_{-} & =-\frac{I'}{\left(1+a'\right)}-W_{-1}\left[-\frac{1}{\left(1+a'\right)}e^{\frac{I}{\left(1+a'\right)}}\right]
+\end{array}\right.\\
+\iff & \left\{ \begin{array}{ll}
 V_{+} & =E_{L}+\frac{I}{g_{L}+a}-\Delta_{T}W_{0}\left(-\frac{1}{1+a/g_{L}}e^{\frac{I}{\Delta_{T}\left(g_{L}+a\right)}}+\frac{E_{L}-V_{T}}{\Delta_{T}}\right)\\
 V_{-} & =E_{L}+\frac{I}{g_{L}+a}-\Delta_{T}W_{-1}\left(-\frac{1}{1+a/g_{L}}e^{\frac{I}{\Delta_{T}\left(g_{L}+a\right)}}+\frac{E_{L}-V_{T}}{\Delta_{T}}\right)
+\end{array}\right.
 \end{align*}
 
 \end_inset
@@ -289,8 +741,68 @@ V_{-} & =E_{L}+\frac{I}{g_{L}+a}-\Delta_{T}W_{-1}\left(-\frac{1}{1+a/g_{L}}e^{\f
 \end_layout
 
 \begin_layout Standard
-Now, let's analyze the stability of the fixed point curves.
- In the simplified coordinates, the Jacobian matrix of this system is 
+These branches are represented in the following figure.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/lambert.png
+	lyxscale 10
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $V$
+\end_inset
+
+ and 
+\begin_inset Formula $w$
+\end_inset
+
+ Nullclines.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Stability of fixed points
+\end_layout
+
+\begin_layout Standard
+To analyze if a fixed point is stable, we need to analyze the determinant
+ 
+\begin_inset Formula $\Delta$
+\end_inset
+
+ and the trace 
+\begin_inset Formula $\tau$
+\end_inset
+
+ of the Jacobian matrix 
+\begin_inset Formula $\mathbf{J}'(V',w')$
+\end_inset
+
+ at those points.
+ For our model, we have:
 \begin_inset Formula 
 \[
 \mathbf{J}'(V',w')=\left[\begin{array}{ll}
@@ -308,11 +820,7 @@ e^{V'}-1 & \,\,-1\\
 \end_layout
 
 \begin_layout Standard
-Denoting 
-\begin_inset Formula $\Delta=\text{det}\left(\mathbf{J}'(V',w')\right)$
-\end_inset
-
-, we have:
+which gives a determinant of 
 \begin_inset Formula 
 \begin{align*}
 \Delta & =-\frac{e^{V'}-1}{\tau'_{w}}+\frac{a'}{\tau'_{w}}\\
@@ -325,47 +833,10 @@ Denoting
 \end_layout
 
 \begin_layout Standard
-It's derivative being 
-\begin_inset Formula $\frac{d\Delta}{dV'}=-\frac{e^{V'}}{\tau'_{w}}<0\,\,\forall V'$
-\end_inset
-
-, since 
-\begin_inset Formula $\tau'_{w}>0$
-\end_inset
-
-, it's a monotonically decreasing function, and it's zero is 
-\begin_inset Formula $V^{*}=\log\left(1+a'\right)$
-\end_inset
-
-, which also corresponds to 
-\begin_inset Formula $V_{\text{min}}$
-\end_inset
-
-, since 
-\begin_inset Formula $F'\left(V_{\text{\text{min}}}\right)=0\implies V_{\text{min}}=\log\left(1+a'\right)$
-\end_inset
-
-.
- Thus, in all the fixed points of the 
-\begin_inset Formula $V_{+}$
-\end_inset
-
- branch the determinant of the Jacobian matrix is negative, which means
- they are all saddle points, i.e.
- they are unstable fixed points.
- For the 
-\begin_inset Formula $V_{-}$
-\end_inset
-
- branch, the determinant is positive, so to analyze the stability of the
- fixed points we need to analyze the trace of the Jacobian matrix 
-\begin_inset Formula $\tau=\text{T}\left(\mathbf{J}'(V',w')\right)$
-\end_inset
-
-, which is:
+Now, this function is monotonically decreasing, since
 \begin_inset Formula 
 \[
-\tau=e^{V'}-1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}
+\frac{d\Delta}{dV'}=-\frac{e^{V'}}{\tau'_{w}}<0\,\,\forall V'
 \]
 
 \end_inset
@@ -374,24 +845,52 @@ It's derivative being
 \end_layout
 
 \begin_layout Standard
-Thus, 
-\begin_inset Formula $\tau\left(V'_{\min}\right)=\left(1+a'\right)-\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)=a'-\frac{1}{\text{\ensuremath{\tau'_{w}}}}$
+and it's zeros is 
+\begin_inset Formula $\Delta=0\implies V^{*}=\log\left(1+a'\right)=V'_{\min}$
 \end_inset
 
-, which means that when 
-\begin_inset Formula $a'<\frac{1}{\tau'_{w}}\iff a<\frac{C}{\tau_{w}}$
+.
+ Since it is always decreasing, for all 
+\begin_inset Formula $V'>V'_{\min}$
 \end_inset
 
- the fixed point at 
-\begin_inset Formula $V_{\min}$
+, i.e.
+ for all the values in the 
+\begin_inset Formula $V'_{+}$
 \end_inset
 
- is stable, and when 
-\begin_inset Formula $a<\frac{C}{\tau_{w}}$
+ branch, we have that 
+\begin_inset Formula $\Delta<0$
 \end_inset
 
- it is stable.
- 
+, which means they are all saddle points, i.e.
+ they are unstable fixed points.
+\end_layout
+
+\begin_layout Standard
+Because we also have that 
+\begin_inset Formula $\Delta>0$
+\end_inset
+
+ for all 
+\begin_inset Formula $V'<V'_{\min}$
+\end_inset
+
+, in order to analyze their stability we need to study the behavior of the
+ trace 
+\begin_inset Formula $\tau=\text{T}\left(\mathbf{J}'(V',w')\right)$
+\end_inset
+
+.
+ It's value is 
+\begin_inset Formula 
+\[
+\tau=e^{V'}-1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -427,7 +926,58 @@ Analyzing
 \end_layout
 
 \begin_layout Standard
-Thus, for case I, 
+Now, let's denominate 
+\begin_inset Formula $a'<\frac{1}{\tau'_{w}}$
+\end_inset
+
+ by case I and 
+\begin_inset Formula $a'>\frac{1}{\tau'_{w}}$
+\end_inset
+
+ by case II.
+\end_layout
+
+\begin_layout Standard
+Thus, in case I, we have have that 
+\begin_inset Formula 
+\[
+a'<\frac{1}{\tau'_{w}}\implies\tau\left(V'\right)<0\,\,\forall V'\in\left\{ V'_{-}\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+i.e.
+ the entire 
+\begin_inset Formula $V'_{-}$
+\end_inset
+
+ is stable.
+ In case II, there might be solutions of 
+\begin_inset Formula $V'$
+\end_inset
+
+ s.t.
+ 
+\begin_inset Formula $\tau\left(V'\right)>0$
+\end_inset
+
+, as we will see.
+\end_layout
+
+\begin_layout Subsection
+Case I - 
+\begin_inset Formula $a<\frac{C}{\tau_{w}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As it was argued before, when 
 \begin_inset Formula $a'<\frac{1}{\tau'_{w}}\iff a<\frac{C}{\tau_{w}}$
 \end_inset
 
@@ -446,7 +996,14 @@ Thus, for case I,
 
  and disappear, i.e.
  this is a saddle node bifurcation.
- The current at which this bifurcation happens is
+ The current at which this bifurcation happens is, which we'll denote by
+ 
+\begin_inset Formula $I_{rh}$
+\end_inset
+
+, which stands for rheobase current, the minimum constant current required
+ to elicit a spike, i.e.
+ the first point at which the stable point becomes unstable.
 \begin_inset Formula 
 \begin{align*}
 I'_{rh} & =-e^{V'_{\min}}+\left(a'+1\right)V'_{\min}\\
@@ -458,6 +1015,69 @@ I_{\mathrm{th}}^{I} & =\left(g_{L}+a\right)\left[V_{T}-E_{L}-\Delta_{T}+\Delta_{
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+For the constants 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:constants"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, 
+\begin_inset Formula $\frac{C}{\tau_{w}}\approx1.9514$
+\end_inset
+
+.
+ Thus, picking 
+\begin_inset Formula $a=1$
+\end_inset
+
+, we have the following saddle-node bifurcation plot:
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/bif_saddle.png
+	lyxscale 10
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Saddle-node bifurcation plot.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Case II - 
+\begin_inset Formula $a>\frac{C}{\tau_{w}}$
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Standard
@@ -510,6 +1130,469 @@ I'_{rh} & =-e^{V'_{rh}}+\left(a'+1\right)V'_{rh}\\
 \frac{I_{rh}^{II}}{g_{L}\Delta_{T}}+\left(1+\frac{a}{g_{L}}\right)\frac{E_{L}-V_{T}}{\Delta_{T}} & =-\left(1+\frac{C}{g_{L}\tau_{w}}\right)+\left(1+\frac{a}{g_{L}}\right)\log\left(1+\frac{C}{g_{L}\tau_{w}}\right)\\
 I_{\mathrm{rh}}^{II} & =\left(g_{L}+a\right)\left[V_{T}-E_{L}-\Delta_{T}+\Delta_{T}\log\left(1+\frac{\tau_{m}}{\tau_{w}}\right)\right]+\Delta_{T}\left(a-\frac{C}{\tau_{w}}\right)
 \end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/bif_hopf.png
+	lyxscale 10
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Andronov-Hopf bifurcation plot.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Oscillations 
+\end_layout
+
+\begin_layout Standard
+The system will oscillate around a fixed point 
+\begin_inset Formula $V'$
+\end_inset
+
+ if and only if the imaginary part of the eigenvalues of the Jacobian matrix
+ is non-null at 
+\begin_inset Formula $V'$
+\end_inset
+
+.
+ The discriminant 
+\begin_inset Formula $\delta$
+\end_inset
+
+ of the system is:
+\begin_inset Formula 
+\begin{align*}
+\delta=\tau^{2}-4\Delta & =\left[e^{V'}-1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right]^{2}-4\left[-\frac{e^{V'}-1}{\tau'_{w}}+\frac{a'}{\tau'_{w}}\right]\\
+ & =\left(e^{V'}-1\right)^{2}-2\frac{e^{V'}-1}{\text{\ensuremath{\tau'_{w}}}}+4\frac{e^{V'}-1}{\tau'_{w}}+\frac{1}{\left(\tau'_{w}\right)^{2}}-\frac{4a'}{\tau'_{w}}\\
+ & =\left(e^{V'}-1\right)^{2}+2\frac{e^{V'}-1}{\text{\ensuremath{\tau'_{w}}}}+\frac{1}{\left(\tau'_{w}\right)^{2}}-\frac{4a'}{\tau'_{w}}\\
+ & =\left[e^{V'}-1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right]^{2}-\frac{4a'}{\tau'_{w}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, to have oscillatory behavior around a stable point 
+\begin_inset Formula $V'_{*}$
+\end_inset
+
+, we need 
+\begin_inset Formula 
+\[
+\left[e^{V'_{*}}-1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right]^{2}-\frac{4a'}{\tau'_{w}}<0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, we are looking for solutions to the equation 
+\begin_inset Formula 
+\begin{align*}
+e^{V'_{*}}-1+\frac{1}{\text{\ensuremath{\tau'_{w}}}} & =\pm2\sqrt{\frac{a'}{\tau'_{w}}}\\
+\left(e^{V'_{*}}\right)_{\pm} & =1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}\pm2\sqrt{\frac{a'}{\tau'_{w}}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As we've seen before, only points along the branch 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+ are prone to be stable, and they satisfy 
+\begin_inset Formula $V_{-}<\log\left(1+a'\right)$
+\end_inset
+
+, thus there exist solutions to the expression above along the branch 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+ if and only if 
+\begin_inset Formula $0<e^{V'_{*}}\leq1+a'$
+\end_inset
+
+.
+ Let's consider the 
+\begin_inset Formula $\left(e^{V'_{*}}\right)_{+}$
+\end_inset
+
+ expression first.
+ We have:
+\begin_inset Formula 
+\begin{align*}
+\frac{\tau'_{w}-1+2\sqrt{a'\tau'_{w}}}{\tau'_{w}} & \leq1+a'\\
+\iff\tau'_{w}-1+2\sqrt{a'\tau'_{w}}-\tau'_{w}-a'\tau'_{w} & \leq0\\
+\iff1-2\sqrt{a'\tau'_{w}}+a'\tau'_{w} & \geq0\\
+\iff\left(1-\sqrt{a'\tau'_{w}}\right)^{2} & \geq0
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The last equation is always true.
+ Now we need to check where 
+\begin_inset Formula $\left(e^{V'_{*}}\right)_{+}>0$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\frac{\tau'_{w}-1+2\sqrt{a'\tau'_{w}}}{\tau'_{w}} & >0\\
+\iff\tau'_{w}-1+2\sqrt{a'\tau'_{w}} & >0\\
+\iff2\sqrt{a'\tau'_{w}} & >1-\tau'_{w}\\
+\iff a' & >\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From the second line, we can see that 
+\begin_inset Formula $\left(e^{V'_{*}}\right)_{+}>0$
+\end_inset
+
+ is satisfied already if 
+\begin_inset Formula $\tau'_{w}>1$
+\end_inset
+
+, but if 
+\begin_inset Formula $\tau'_{w}<1$
+\end_inset
+
+ it is still satisfied if 
+\begin_inset Formula $a'>\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+.
+ Analogously, solutions to 
+\begin_inset Formula $\left(e^{V'_{*}}\right)_{-}=1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}-2\sqrt{\frac{a'}{\tau'_{w}}}$
+\end_inset
+
+ exist when 
+\begin_inset Formula $\tau'_{w}>1$
+\end_inset
+
+ and 
+\begin_inset Formula $a'\leq\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+.
+ The currents of these critical points are
+\begin_inset Formula 
+\begin{align*}
+I'_{\pm} & =\left(1+a'\right)V'_{*}-e^{V'_{*}}\\
+ & =\left(1+a'\right)\log\left[1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}\pm2\sqrt{\frac{a'}{\tau'_{w}}}\right]-1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}-2\sqrt{\frac{a'}{\tau'_{w}}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+which corresponds to
+\begin_inset Formula 
+\[
+I_{\pm}=\left(g_{L}+a\right)\Delta_{T}\log\left(\frac{g_{L}\tau_{w}-C\pm2\sqrt{aC\tau_{w}}}{g_{L}\tau_{w}}\right)-\Delta_{T}\frac{g_{L}\tau_{w}-C\pm2\sqrt{aC\tau_{w}}}{\tau_{w}}-\left(g_{L}+a\right)\left(E_{L}-V_{T}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, to summarize we have that when 
+\begin_inset Formula $\tau'_{w}<1$
+\end_inset
+
+ oscillations around equilibria exist when 
+\begin_inset Formula $a'>\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $I'<I'_{+}$
+\end_inset
+
+, and when 
+\begin_inset Formula $\tau'_{w}>1$
+\end_inset
+
+ they exist when 
+\begin_inset Formula $a'<\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+ for any 
+\begin_inset Formula $I'_{\min}<I'<I'_{\max}$
+\end_inset
+
+ and when 
+\begin_inset Formula $a'>\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+ for any 
+\begin_inset Formula $I'<I'_{+}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Parameter fitting
+\end_layout
+
+\begin_layout Standard
+A real advantage of having a simple two dimensional model is that systematic
+ procedures to extract parameters from experimental data to fit them to
+ the model are much easier to come up with, whereas they are mostly unknown
+ for complicated models that capture behavior of neurons in detail, like
+ the Hodgkin-Huxley model.
+ In our reference paper 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper1"
+literal "false"
+
+\end_inset
+
+ it's shown that all parameters can be systematically extracted using a
+ series of standard simulation paradigms, which we'll go through now.
+\end_layout
+
+\begin_layout Standard
+The membrane capacitance 
+\begin_inset Formula $C$
+\end_inset
+
+, the leak conductance 
+\begin_inset Formula $g_{L}$
+\end_inset
+
+ and the leak reversal potential 
+\begin_inset Formula $E_{L}$
+\end_inset
+
+ can be determined by performing an exponential fit to the 
+\begin_inset Formula $V$
+\end_inset
+
+ plot generated by the reference model when inducting a current pulse.
+ 
+\end_layout
+
+\begin_layout Standard
+To determine the subthreshold adaptation constant 
+\begin_inset Formula $a$
+\end_inset
+
+, we first note that far away from the potential threshold 
+\begin_inset Formula $V_{T}$
+\end_inset
+
+, the term 
+\begin_inset Formula $\mathrm{e}^{\left(V-V_{\mathrm{T}}\right)/\Delta_{\mathrm{T}}}$
+\end_inset
+
+ can be neglected.
+ We can make the system converge to the stable node 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+, and if the current 
+\begin_inset Formula $I$
+\end_inset
+
+ is slowly increased such that the system is always in that stable node,
+ then 
+\begin_inset Formula $\dot{V}$
+\end_inset
+
+ can be neglected, which by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:model"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ implies 
+\begin_inset Formula 
+\[
+I=(g_{L}+a)(V-E_{L})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, we can determine 
+\begin_inset Formula $a$
+\end_inset
+
+ by performing a linear fit to the 
+\begin_inset Formula $I\left(V\right)$
+\end_inset
+
+ plot obtain from the detailed model.
+ 
+\end_layout
+
+\begin_layout Standard
+To determine the spike-triggered adaptation 
+\begin_inset Formula $b$
+\end_inset
+
+, the procedure can be: first, depolarize the membrane potential close to
+ the average potential during synaptic stimulation, and then inject short
+ but strong current pulses in order to trigger spikes.
+ Just before the pulse onset, the potential is till far away from the threshold
+ potential, and thus we can neglect the exponential term again, which implies
+ 
+\begin_inset Formula 
+\[
+w=-C\frac{dV}{dt}-g_{\mathrm{L}}\left(V-E_{\mathrm{L}}\right)+I
+\]
+
+\end_inset
+
+The differences from the successive 
+\begin_inset Formula $w$
+\end_inset
+
+'s obtained in this way, for each spike, and the contribution from the subthresh
+old adaptation 
+\begin_inset Formula $a$
+\end_inset
+
+ gives the contribution to spike-triggered adaptation 
+\begin_inset Formula $b$
+\end_inset
+
+.
+ The fitting of these values to an exponential enables the estimate of 
+\begin_inset Formula $b$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{w}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In order to determine 
+\begin_inset Formula $\Delta_{T}$
+\end_inset
+
+ and 
+\begin_inset Formula $V_{T}$
+\end_inset
+
+, we can proceed as follows: For each value of 
+\begin_inset Formula $\Delta_{T}$
+\end_inset
+
+, choose 
+\begin_inset Formula $V_{T}$
+\end_inset
+
+ such that our model and the detailed model have the same average firing
+ rate (
+\emph on
+effective threshold
+\emph default
+).
+ Then, they chose the 
+\begin_inset Formula $\Delta_{T}$
+\end_inset
+
+ valued that minimized the variance of 
+\begin_inset Formula $V_{T}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+In this project, we've seen that the Adaptive Integrate-and-Fire model can
+ be well fitted to reproduce neuronal behavior as modeled by much complicated
+ models, and exploited its simplicity to determine analytically regions
+ of different behaviors depending on the parameters 
+\begin_inset Formula $I$
+\end_inset
+
+, 
+\begin_inset Formula $a$
+\end_inset
+
+ and 
+\begin_inset Formula $C$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintAll"
+bibfiles "aeif"
+options "plain"
 
 \end_inset
 
