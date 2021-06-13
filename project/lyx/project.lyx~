@@ -192,6 +192,33 @@ w & \rightarrow w+b
 We will use analytical procedures to make precise statements about bifurcations
  in this model, and reflect on the relationship between behaviors generated
  by this model and real neuronal data.
+ Unless stated otherwise, the constant values we're going to use to generate
+ plots in this project are the one's obtain in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper1"
+literal "false"
+
+\end_inset
+
+ as the best fit, which are:
+\begin_inset Formula 
+\begin{align}
+\begin{array}{ll}
+C & =281\,\text{pF}\\
+g_{L} & =20\,\text{nS}\\
+E_{L} & =-70.6\,\text{mV}\\
+V_{T} & =-50.4\,\text{mV}\\
+\Delta_{T} & =2\,\text{mV}\\
+\tau_{w} & =144\,\text{ms}\\
+a & =4\,\text{nS}\\
+b & =0.0805\,\text{nA}
+\end{array}\label{eq:constants}
+\end{align}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -506,6 +533,58 @@ w' & =a'V'
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
+The appearance of the nullclines for the aEIF model is represented in the
+ following figure.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/nullclines.png
+	lyxscale 10
+	width 40text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/nullclines_separated.png
+	lyxscale 10
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $V$
+\end_inset
+
+ and 
+\begin_inset Formula $w$
+\end_inset
+
+ Nullclines.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 Considering the fixed point expression, let's define 
 \begin_inset Formula $F\left(V'\right)=e^{V'}-\left(a'+1\right)V'$
 \end_inset
@@ -655,6 +734,49 @@ V_{+} & =E_{L}+\frac{I}{g_{L}+a}-\Delta_{T}W_{0}\left(-\frac{1}{1+a/g_{L}}e^{\fr
 V_{-} & =E_{L}+\frac{I}{g_{L}+a}-\Delta_{T}W_{-1}\left(-\frac{1}{1+a/g_{L}}e^{\frac{I}{\Delta_{T}\left(g_{L}+a\right)}}+\frac{E_{L}-V_{T}}{\Delta_{T}}\right)
 \end{array}\right.
 \end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These branches are represented in the following figure.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/lambert.png
+	lyxscale 10
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $V$
+\end_inset
+
+ and 
+\begin_inset Formula $w$
+\end_inset
+
+ Nullclines.
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -895,6 +1017,61 @@ I_{\mathrm{th}}^{I} & =\left(g_{L}+a\right)\left[V_{T}-E_{L}-\Delta_{T}+\Delta_{
 
 \end_layout
 
+\begin_layout Standard
+For the constants 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:constants"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, 
+\begin_inset Formula $\frac{C}{\tau_{w}}\approx1.9514$
+\end_inset
+
+.
+ Thus, picking 
+\begin_inset Formula $a=1$
+\end_inset
+
+, we have the following saddle-node bifurcation plot:
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/bif_saddle.png
+	lyxscale 10
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Saddle-node bifurcation plot.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Case II - 
 \begin_inset Formula $a>\frac{C}{\tau_{w}}$
@@ -957,6 +1134,251 @@ I_{\mathrm{rh}}^{II} & =\left(g_{L}+a\right)\left[V_{T}-E_{L}-\Delta_{T}+\Delta_
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/hugens/shared/uni/neuro/git/project/figures/bif_hopf.png
+	lyxscale 10
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Andronov-Hopf bifurcation plot.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Oscillations 
+\end_layout
+
+\begin_layout Standard
+The system will oscillate around a fixed point 
+\begin_inset Formula $V'$
+\end_inset
+
+ if and only if the imaginary part of the eigenvalues of the Jacobian matrix
+ is non-null at 
+\begin_inset Formula $V'$
+\end_inset
+
+.
+ The discriminant 
+\begin_inset Formula $\delta$
+\end_inset
+
+ of the system is:
+\begin_inset Formula 
+\begin{align*}
+\delta=\tau^{2}-4\Delta & =\left[e^{V'}-1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right]^{2}-4\left[-\frac{e^{V'}-1}{\tau'_{w}}+\frac{a'}{\tau'_{w}}\right]\\
+ & =\left(e^{V'}-1\right)^{2}-2\frac{e^{V'}-1}{\text{\ensuremath{\tau'_{w}}}}+4\frac{e^{V'}-1}{\tau'_{w}}+\frac{1}{\left(\tau'_{w}\right)^{2}}-\frac{4a'}{\tau'_{w}}\\
+ & =\left(e^{V'}-1\right)^{2}+2\frac{e^{V'}-1}{\text{\ensuremath{\tau'_{w}}}}+\frac{1}{\left(\tau'_{w}\right)^{2}}-\frac{4a'}{\tau'_{w}}\\
+ & =\left[e^{V'}-1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right]^{2}-\frac{4a'}{\tau'_{w}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, to have oscillatory behavior around a stable point 
+\begin_inset Formula $V'_{*}$
+\end_inset
+
+, we need 
+\begin_inset Formula 
+\[
+\left[e^{V'_{*}}-1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right]^{2}-\frac{4a'}{\tau'_{w}}<0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, we are looking for solutions to the equation 
+\begin_inset Formula 
+\begin{align*}
+e^{V'_{*}}-1+\frac{1}{\text{\ensuremath{\tau'_{w}}}} & =\pm2\sqrt{\frac{a'}{\tau'_{w}}}\\
+\left(e^{V'_{*}}\right)_{\pm} & =1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}\pm2\sqrt{\frac{a'}{\tau'_{w}}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As we've seen before, only points along the branch 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+ are prone to be stable, and they satisfy 
+\begin_inset Formula $V_{-}<\log\left(1+a'\right)$
+\end_inset
+
+, thus there exist solutions to the expression above along the branch 
+\begin_inset Formula $V_{-}$
+\end_inset
+
+ if and only if 
+\begin_inset Formula $0<e^{V'_{*}}\leq1+a'$
+\end_inset
+
+.
+ Let's consider the 
+\begin_inset Formula $\left(e^{V'_{*}}\right)_{+}$
+\end_inset
+
+ expression first.
+ We have:
+\begin_inset Formula 
+\begin{align*}
+\frac{\tau'_{w}-1+2\sqrt{a'\tau'_{w}}}{\tau'_{w}} & \leq1+a'\\
+\iff\tau'_{w}-1+2\sqrt{a'\tau'_{w}}-\tau'_{w}-a'\tau'_{w} & \leq0\\
+\iff1-2\sqrt{a'\tau'_{w}}+a'\tau'_{w} & \geq0\\
+\iff\left(1-\sqrt{a'\tau'_{w}}\right)^{2} & \geq0
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The last equation is always true.
+ Now we need to check where 
+\begin_inset Formula $\left(e^{V'_{*}}\right)_{+}>0$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\frac{\tau'_{w}-1+2\sqrt{a'\tau'_{w}}}{\tau'_{w}} & >0\\
+\iff\tau'_{w}-1+2\sqrt{a'\tau'_{w}} & >0\\
+\iff2\sqrt{a'\tau'_{w}} & >1-\tau'_{w}\\
+\iff a' & >\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From the second line, we can see that 
+\begin_inset Formula $\left(e^{V'_{*}}\right)_{+}>0$
+\end_inset
+
+ is satisfied already if 
+\begin_inset Formula $\tau'_{w}>1$
+\end_inset
+
+, but if 
+\begin_inset Formula $\tau'_{w}<1$
+\end_inset
+
+ it is still satisfied if 
+\begin_inset Formula $a'>\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+.
+ Analogously, solutions to 
+\begin_inset Formula $\left(e^{V'_{*}}\right)_{-}=1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}-2\sqrt{\frac{a'}{\tau'_{w}}}$
+\end_inset
+
+ exist when 
+\begin_inset Formula $\tau'_{w}>1$
+\end_inset
+
+ and 
+\begin_inset Formula $a'\leq\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+.
+ The currents of these critical points are
+\begin_inset Formula 
+\begin{align*}
+I'_{\pm} & =\left(1+a'\right)V'_{*}-e^{V'_{*}}\\
+ & =\left(1+a'\right)\log\left[1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}\pm2\sqrt{\frac{a'}{\tau'_{w}}}\right]-1-\frac{1}{\text{\ensuremath{\tau'_{w}}}}-2\sqrt{\frac{a'}{\tau'_{w}}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+which corresponds to
+\begin_inset Formula 
+\[
+I_{\pm}=\left(g_{L}+a\right)\Delta_{T}\log\left(\frac{g_{L}\tau_{w}-C\pm2\sqrt{aC\tau_{w}}}{g_{L}\tau_{w}}\right)-\Delta_{T}\frac{g_{L}\tau_{w}-C\pm2\sqrt{aC\tau_{w}}}{\tau_{w}}-\left(g_{L}+a\right)\left(E_{L}-V_{T}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, to summarize we have that when 
+\begin_inset Formula $\tau'_{w}<1$
+\end_inset
+
+ oscillations around equilibria exist when 
+\begin_inset Formula $a'>\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $I'<I'_{+}$
+\end_inset
+
+, and when 
+\begin_inset Formula $\tau'_{w}>1$
+\end_inset
+
+ they exist when 
+\begin_inset Formula $a'<\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+ for any 
+\begin_inset Formula $I'_{\min}<I'<I'_{\max}$
+\end_inset
+
+ and when 
+\begin_inset Formula $a'>\frac{1}{4\tau'_{w}}\left(1-\tau'_{w}\right)^{2}$
+\end_inset
+
+ for any 
+\begin_inset Formula $I'<I'_{+}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -1135,6 +1557,29 @@ effective threshold
 
  valued that minimized the variance of 
 \begin_inset Formula $V_{T}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+In this project, we've seen that the Adaptive Integrate-and-Fire model can
+ be well fitted to reproduce neuronal behavior as modeled by much complicated
+ models, and exploited its simplicity to determine analytically regions
+ of different behaviors depending on the parameters 
+\begin_inset Formula $I$
+\end_inset
+
+, 
+\begin_inset Formula $a$
+\end_inset
+
+ and 
+\begin_inset Formula $C$
 \end_inset
 
 .

@@ -1,6 +1,6 @@
 clear all, close all, clc;
 
-global C g_L E_L V_T delta_T tau_W a;
+global C g_L E_L V_T delta_T tau_W;
 
 g_L     = 20;
 E_L     = -70.6;
@@ -9,10 +9,10 @@ delta_T = 2;
 tau_W   = 144;
 C       = 281;
 % this case: tau_m < tau_W;
-disp(C/g_L);
+disp(tau_lt());
 
 % exercise to run
-VIEW_PART = 1;
+VIEW_PART = 10;
 
 % GENERAL VIEW OF NULLCLINE BEHAVIOUR
 %================================================================
@@ -48,6 +48,19 @@ if (VIEW_PART == 2)
     I_turn = plot_bifurcation(a);
     xlabel('I'); ylabel('V'); grid on;
     title(sprintf('a = %d ; I_{rh} = %0.2f', a, I_turn))
+end
+
+% PLOT I's WITH OSCILLATIONS
+%================================================================
+if (VIEW_PART == 10)
+    as = linspace(0, 100, 1000);
+    Irh = (g_L + as).*(V_T - E_L - delta_T + delta_T .* log(1+C./(g_L*tau_W))) + delta_T .* (as - C./tau_W);
+    Ip  = I_p(as);
+    Im  = I_m(as);
+    vplot = figure();
+    plot(as, Irh); hold on;
+    plot(as, Ip); hold on;
+    plot(as, Im);
 end
 
 % COMPARE MY METHOD OF FINDING BIFURCATION WITH ANALYTIC RESULT
@@ -206,4 +219,28 @@ function I_turn = plot_bifurcation(a)
 
     scatter(I_turn, V_turn, 'MarkerFaceColor', [.75 0 .75], 'MarkerEdgeColor', [.75 0 .75]); 
     legend('unstable', 'stable', 'Bifurcation point');
+end
+
+% RETURNS TRUE IF TAU'_W < 1
+function b = tau_lt()
+    global C g_L E_L V_T delta_T tau_W;
+    b = (tau_W > (C/g_L))
+end
+
+% RETURNS TRUE IF A' < (1 - TAU'_W)^2/(4*TAU'_W)
+function b = a_lt()
+    global C g_L E_L V_T delta_T tau_W;
+    b = (a < (C/(4*tau_W))*(1 - tau_W*g_L/C)^2);
+end
+
+function I = I_p(a)
+    global C g_L E_L V_T delta_T tau_W;
+    log_arg = (g_L .* tau_W - C + 2.*sqrt(a.*C.*tau_W)) ./ (g_L .* tau_W);
+    I = (g_L + a) .* delta_T .* log(log_arg) - delta_T .* log_arg .* g_L - (g_L + a) .* (E_L - V_T);
+end
+
+function I = I_m(a)
+    global C g_L E_L V_T delta_T tau_W;
+    log_arg = (g_L .* tau_W - C - 2.*sqrt(a.*C.*tau_W)) ./ (g_L .* tau_W);
+    I = (g_L + a) .* delta_T .* log(log_arg) - delta_T .* log_arg .* g_L - (g_L + a) .* (E_L - V_T);
 end

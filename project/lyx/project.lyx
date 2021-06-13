@@ -1382,6 +1382,69 @@ Thus, to summarize we have that when
 \end_layout
 
 \begin_layout Section
+Criticality of the Andronov-Hopf Bifurcation
+\end_layout
+
+\begin_layout Standard
+The criticality of the Andronov-Hopf bifurcation is determined following
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper3"
+literal "false"
+
+\end_inset
+
+, where it is proved that, now using our specific system, the bifurcation
+ is subcritical if 
+\begin_inset Formula $A\left(\tau'_{w},a'\right)>0$
+\end_inset
+
+ and supercritical if 
+\begin_inset Formula $A\left(\tau'_{w},a'\right)<0$
+\end_inset
+
+, where
+\begin_inset Formula 
+\[
+A(\tau'_{w},a')=F^{\prime\prime\prime}\left(v_{a}\right)+\frac{1}{a'-\frac{1}{\tau'_{w}}}\left(F^{\prime\prime}\left(v_{a}\right)\right)^{2},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $F\left(v\right)=e^{v}-v$
+\end_inset
+
+ and 
+\begin_inset Formula $v_{a}=\log\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)$
+\end_inset
+
+, which is the voltage value for which the bifurcation happens.
+ So, we have:
+\begin_inset Formula 
+\begin{align*}
+A(\tau'_{w},a') & =e^{v_{a}}+\frac{1}{a'-\frac{1}{\tau'_{w}}}e^{2v_{a}}\\
+ & =\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)+\frac{1}{a'-\frac{1}{\tau'_{w}}}\left(1+\frac{1}{\text{\ensuremath{\tau'_{w}}}}\right)^{2}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, we have that 
+\begin_inset Formula $A(\tau'_{w},a')>0$
+\end_inset
+
+, which implies that the bifurcation is always subcritical.
+\end_layout
+
+\begin_layout Section
 Parameter fitting
 \end_layout
 
